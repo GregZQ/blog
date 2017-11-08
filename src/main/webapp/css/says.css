@@ -1,0 +1,19 @@
+.liuyan h2{
+	border-bottom: 1px black dashed;
+	padding-bottom: 20px;
+	font-size:2.1em;
+  	line-height: 1.35em;
+}
+.say_head{
+	
+}
+.say_con{
+	padding-left: 50px;
+	padding-right: 50px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	 word-wrap:break-word; 
+}
+.say_end{height: 24px;line-height: 24px;background: #f6f6f6;text-align: left;padding-right: 10px;margin-right: 14px; }
+.say_end b{color:#e26867}
+.say_end em{font-style:normal;padding:0 0 0 8px;}

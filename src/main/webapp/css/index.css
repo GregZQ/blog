@@ -1,0 +1,115 @@
+@charset "utf-8";
+/* CSS Document */
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0;border:0; }
+.cf:after{content:"";display:block;clear:both;height:0;overflow:hidden}
+.cf{zoom:1}
+.cf dd{
+    word-wrap: break-word;
+}
+body, button, input, select, textarea {font-size:14px; color:#333;font-family: "宋体";}
+body{color:#7e8582;font-size: 14px;font-family: "ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;}
+h1, h2, h3, h4, h5, h6{ font-size:100%; }
+ul, ol { list-style:none; }
+a { text-decoration:none;color:#4c4e4f; }
+a:hover {color:#d71943; }
+input, button{outline:0px;border:0;}
+input, button, select, textarea { outline:none; }
+table { border-collapse:collapse; border-spacing:0; }
+img { border:0; display:block;}
+/* 样式声明结束 */
+
+.head {height: 78px;width: 1000px;margin: 0 auto;}
+.head h1{float: left;width: 126px;height:48px;margin:14px 0 0 12px;}
+.head h1 .logo{display: block;width:100%;height:48px;background: url(../images/logo.png) no-repeat;text-indent: -2222px;}
+.head ul{float:right;margin:14px 0 0 0;}
+.head ul li{height:48px;float: left;line-height: 48px;text-align: center;width: 90px;}
+.head ul li a{height:48px;line-height: 48px;color: #1c1a1a;font-size:18px;font-family: "微软雅黑";display: block;float: left;position:relative;overflow: hidden;width: 100%;}
+.head ul li a span{display:block;height:48px;position: absolute;left:0;width: 80px;}
+.head ul li a span.nav1{top:0;}
+.head ul li a span.nav2{top:48px;}
+
+/* banner */
+.banner{width: 100%;height:364px;background: url(../images/banner.jpg) no-repeat top center;}
+.banner_c{width: 1000px;margin:0 auto;height:364px;overflow: hidden;position:relative;}
+.banner_c .v_span{margin:60px 0 0 32px;display: block;}
+.banner_c .v_span img{border-radius: 50%;border: 8px solid #a3d5cb;}
+.banner_c .banner_c_text{position:absolute;top:92px;left:236px;overflow: hidden;}
+.banner_c_text p{height: 25px;line-height: 25px;font-size: 15px;color:#616469;display: none;}
+
+
+/* 内容模版 */
+.mb_bg{width: 100%;background: #f5f5f5; }
+.mb_bg .mb_bg_center{width: 1000px;margin: 0 auto;}
+.mb_bg_center h6{width:225px;height: 35px;line-height:35px;font-family: "微软雅黑";font-size:18px;font-weight: 100;background: #cdcbcb;margin: 10px 0;padding-left:21px;color:#2a2a2a;-moz-box-shadow: #999 8px 3px 6px;box-shadow: #999 8px 3px 6px;}
+.mb_bg_center h6 span{color:#27b1fc;}
+/* 模版轮播图 */
+.focus{}
+.focus ul{}
+.focus ul li{float: left;padding: 8px 9px 0 8px;text-align: center;
+	transition: all 1s ease;
+	-moz-transition: all 1s ease;
+	-webkit-transition: all 1s ease;
+	-o-transition: all 1s ease;
+	-ms-transition: all 1s ease;
+}
+.focus ul li a img{border:1px solid #ddd;}
+.focus ul li:hover{background: #898989;}
+.focus ul li a:hover{text-decoration: none}
+.focus ul li a span{display:block;height:33px;line-height: 33px;color: #fff;}
+
+/* 内容开始 */
+.content{width: 1000px;margin:0 auto;}
+.content .content_bg{padding-top:20px;}
+.content .content_bg ul li{float:left;}
+.content .content_bg .bt-l{width: 277px;}
+.content .content_bg .bt-l,.content .content_bg .bt-r{background: url(../images/wlx.png) repeat-x left bottom;height: 35px;}
+.content .content_bg .bt-c{background: url(../images/tjwz.png) no-repeat;width: 191px;height: 51px; }
+.content .content_bg .bt-r{width:532px;}
+/* 内容左边 */
+.content_left{width: 700px;float: left;background: url(../images/wly.png) repeat-y top right;padding-right: 18px;}
+.content_left_b h6{color: #3a3e3c;font-family: "微软雅黑";font-size:16px;height: 50px;line-height: 50px;}
+.content_left_b h6:hover{color: #9CB12;font-family: "微软雅黑";font-size:16px;height: 50px;line-height: 50px;}
+.content_left_b dl dt{float: left;width: 194px;padding-bottom: 12px;}
+.content_left_b dl dt img{width: 192px;height:170px;border:1px solid #d6d6d6;}
+.content_left_b dl dd{float: left;width: 480px;padding: 0 12px;position: relative;height:172px;}
+.content_left_b dl dd p{line-height: 26px;width: 480px;}
+.content_left_b dl dd a{display: block;width: 100px;height: 32px;line-height:32px;text-align: center;color: #fff;background: #5bb7f3;bottom:34px;right:12px;position: absolute;}
+.footer{height: 24px;line-height: 24px;background: #f6f6f6;text-align: left;padding-right: 10px;margin-right: 14px;}
+.footer b{color:#e26867}
+.footer em{font-style:normal;padding:0 0 0 8px;}
+
+/* 内容右边 */
+.content_right{float: left;width: 266px;padding: 0 8px;}
+.content_right iframe{background: url(../images/tq.png) no-repeat;padding:12px 0 0 16px ;width: 250px;overflow: hidden;height: 60px!important;}
+
+.list{padding-top: 10px;}
+.list h5{height:30px;height: 40px;line-height: 40px;padding-left: 10px;color: #4c4e4f;text-shadow:#3b3e3f 0px 0px 0;font-size: 16px;width: 253px;margin-bottom:6px;border-bottom: 1px solid #c5cac8;border-radius:2px;
+	-moz-box-shadow:0px 1px 2px #c5cac8;
+	-webkit-box-shadow:0px 1px 2px #c5cac8;
+	box-shadow:0px 1px 2px #c5cac8;
+	-webkit-transition: all 1.75s;
+	-o-transition: all 1.75s;
+	-moz-transition: all 1.75s;
+	transition: all 1.75s;
+}
+.list h5:hover{background: #d5dbdf}
+
+.list ul li{height: 34px;line-height: 34px;background: url(../images/sj.png) no-repeat left center;padding-left: 8px;white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 254px;margin-left: 6px;
+}
+
+.list_ph ul li{background: none;padding-left: 0;}
+.list_ph ul li b{width: 19px;height:19px;text-align: center;line-height: 19px;color: #fff;border-radius: 1px;background: #9a989b;display: block;float: left;margin: 8px 6px 0 0;}
+.list_ph ul li b.ph1{background: #ff858e}
+.list_ph ul li b.ph2{background: #77d549}
+.list_ph ul li b.ph3{background: #62c1ff}
+
+.list_ph .zjfk li{float:left;height: 40px; line-height:40px;padding-left: 5px;width:auto; color: black;}
+
+.list h6{height:35px;line-height:40px;padding-left: 12px;}
+.list .erweima img{width: 270px;}
+
+.bottom_footer{border-top:1px solid #cecaca;width: 1000px;margin:20px auto 0 auto;height: 70px;}
+.bottom_footer ul li img{margin: 16px 0 0 12px;}

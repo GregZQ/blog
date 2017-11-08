@@ -1,0 +1,46 @@
+.con_head{
+	height: 80px;
+	border-bottom: 1px gray dashed;
+}
+.con_head h2{
+	color: #3a3e3c;
+    font-family: "微软雅黑";
+    font-size: 1.35em;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
+.con_head h5{
+	margin: 5px;
+    font-weight: 100;
+    color: #39C;
+    border-bottom: #ccc 1px dashed;
+    text-align: center;
+    padding: 8px 0;
+}
+.con_head h5 em{
+	    font-style:normal;
+	    padding-right: 5px;
+}
+.con_body{
+	padding-top: 15px;
+	color: black;
+	padding-bottom: 15px;
+    border-bottom: #ccc 1px dashed;	
+    word-wrap: break-word;
+}
+.con_body nav{
+	margin-top: 10px;
+	height: 60px;
+	font-size: 1.15em;
+}
+.con_body nav a{
+	text-decoration: none;
+	display: block;
+	height: 25px;
+	line-height: 25px;
+}
+.con_body nav a:hover{
+	text-decoration:underline;
+	color:#9cb12f;
+}

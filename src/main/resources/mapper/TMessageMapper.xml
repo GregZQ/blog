@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhangqii.dao.TMessageMapper" >
+  <resultMap id="BaseResultMap" type="com.zhangqii.pojo.TMessage" >
+    <id column="mid" property="mid" jdbcType="INTEGER" />
+    <result column="mcon" property="mcon" jdbcType="VARCHAR" />
+    <result column="mtime" property="mtime" jdbcType="DATE" />
+    <result column="murl" property="murl" jdbcType="VARCHAR" />
+    <result column="mmail" property="mmail" jdbcType="VARCHAR" />
+    <result column="mname" property="mname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    mid, mcon, mtime, murl, mmail, mname
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhangqii.pojo.TMessageExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_message
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_message
+    where mid = #{mid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_message
+    where mid = #{mid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhangqii.pojo.TMessageExample" >
+    delete from t_message
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhangqii.pojo.TMessage" >
+    insert into t_message (mid, mcon, mtime, 
+      murl, mmail, mname)
+    values (#{mid,jdbcType=INTEGER}, #{mcon,jdbcType=VARCHAR}, #{mtime,jdbcType=DATE}, 
+      #{murl,jdbcType=VARCHAR}, #{mmail,jdbcType=VARCHAR}, #{mname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhangqii.pojo.TMessage" >
+    insert into t_message
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mid != null" >
+        mid,
+      </if>
+      <if test="mcon != null" >
+        mcon,
+      </if>
+      <if test="mtime != null" >
+        mtime,
+      </if>
+      <if test="murl != null" >
+        murl,
+      </if>
+      <if test="mmail != null" >
+        mmail,
+      </if>
+      <if test="mname != null" >
+        mname,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mid != null" >
+        #{mid,jdbcType=INTEGER},
+      </if>
+      <if test="mcon != null" >
+        #{mcon,jdbcType=VARCHAR},
+      </if>
+      <if test="mtime != null" >
+        #{mtime,jdbcType=DATE},
+      </if>
+      <if test="murl != null" >
+        #{murl,jdbcType=VARCHAR},
+      </if>
+      <if test="mmail != null" >
+        #{mmail,jdbcType=VARCHAR},
+      </if>
+      <if test="mname != null" >
+        #{mname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhangqii.pojo.TMessageExample" resultType="java.lang.Integer" >
+    select count(*) from t_message
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_message
+    <set >
+      <if test="record.mid != null" >
+        mid = #{record.mid,jdbcType=INTEGER},
+      </if>
+      <if test="record.mcon != null" >
+        mcon = #{record.mcon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mtime != null" >
+        mtime = #{record.mtime,jdbcType=DATE},
+      </if>
+      <if test="record.murl != null" >
+        murl = #{record.murl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mmail != null" >
+        mmail = #{record.mmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mname != null" >
+        mname = #{record.mname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_message
+    set mid = #{record.mid,jdbcType=INTEGER},
+      mcon = #{record.mcon,jdbcType=VARCHAR},
+      mtime = #{record.mtime,jdbcType=DATE},
+      murl = #{record.murl,jdbcType=VARCHAR},
+      mmail = #{record.mmail,jdbcType=VARCHAR},
+      mname = #{record.mname,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhangqii.pojo.TMessage" >
+    update t_message
+    <set >
+      <if test="mcon != null" >
+        mcon = #{mcon,jdbcType=VARCHAR},
+      </if>
+      <if test="mtime != null" >
+        mtime = #{mtime,jdbcType=DATE},
+      </if>
+      <if test="murl != null" >
+        murl = #{murl,jdbcType=VARCHAR},
+      </if>
+      <if test="mmail != null" >
+        mmail = #{mmail,jdbcType=VARCHAR},
+      </if>
+      <if test="mname != null" >
+        mname = #{mname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where mid = #{mid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhangqii.pojo.TMessage" >
+    update t_message
+    set mcon = #{mcon,jdbcType=VARCHAR},
+      mtime = #{mtime,jdbcType=DATE},
+      murl = #{murl,jdbcType=VARCHAR},
+      mmail = #{mmail,jdbcType=VARCHAR},
+      mname = #{mname,jdbcType=VARCHAR}
+    where mid = #{mid,jdbcType=INTEGER}
+  </update>
+  
+  <select id="findByLimit" parameterType="com.zhangqii.pojo.Page" resultType="com.zhangqii.pojo.TMessage">
+  	SELECT * FROM t_message ORDER BY MID DESC LIMIT #{currentSum},#{row}  
+  </select>
+</mapper>

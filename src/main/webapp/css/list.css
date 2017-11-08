@@ -1,0 +1,83 @@
+@charset "utf-8";
+/* CSS Document */
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0;border:0; }
+.cf:after{content:"";display:block;clear:both;height:0;overflow:hidden}
+.cf{zoom:1}
+.cf dd{
+    word-wrap: break-word;}
+body, button, input, select, textarea {font-size:14px; color:#333;font-family: "宋体";}
+body{color:#7e8582;font-size: 14px;font-family: "ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;}
+h1, h2, h3, h4, h5, h6{ font-size:100%; }
+ul, ol { list-style:none; }
+a { text-decoration:none;color:#4c4e4f; }
+a:hover { text-decoration:underline;color:#d71943; }
+input, button{outline:0;border:0;}
+input, button, select, textarea { outline:none; }
+table { border-collapse:collapse; border-spacing:0; }
+img { border:0; display:block;}
+/* 样式声明结束 */
+
+.head {height: 78px;width: 1000px;margin: 0 auto;}
+.head h1{float: left;width: 126px;height:48px;margin:14px 0 0 12px;}
+.head h1 .logo{display: block;width:100%;height:48px;background: url(../images/logo.png) no-repeat;text-indent: -2222px;}
+.head ul{float:right;margin:14px 0 0 0;}
+.head ul li{height:48px;float: left;line-height: 48px;text-align: center;width: 90px;}
+.head ul li a{height:48px;line-height: 48px;color: #1c1a1a;font-size:18px;font-family: "微软雅黑";display: block;float: left;position:relative;overflow: hidden;width: 100%;}
+.head ul li a span{display:block;height:48px;position: absolute;left:0;width: 80px;}
+.head ul li a span.nav1{top:0;}
+.head ul li a span.nav2{top:48px;}
+
+/* banner */
+.banner{width: 100%;height:364px;background: url(../images/banner.jpg) no-repeat top center;}
+.banner_c{width: 1000px;margin:0 auto;height:364px;overflow: hidden;position:relative;}
+.banner_c .v_span{margin:60px 0 0 32px;display: block;}
+.banner_c .v_span img{border-radius: 50%;border: 8px solid #a3d5cb;}
+.banner_c .banner_c_text{position:absolute;top:92px;left:236px;overflow: hidden;}
+.banner_c_text p{height: 25px;line-height: 25px;font-size: 15px;color:#616469;display: none;}
+
+
+/* 内容模版 */
+.mb_bg{width: 100%;background: #f5f5f5;margin-bottom:15px; padding:5px 0;}
+.mb_bg .mb_bg_center{width: 1000px;margin: 0 auto}
+.mb_bg_center ul li{float: left;border:1px solid #c5cac8;height: 30px;line-height: 30px;width:106px;text-align:center;margin-left:-1px;}
+.mb_bg_center ul li a{display: block;color:#1c1a1a;
+	-webkit-transition: all 0.75s;
+	-o-transition: all 0.75s;
+	-moz-transition: all 0.75s;
+	transition: all 0.75s;
+}
+.mb_bg_center ul li a.dq{color: #9cb12f}
+.mb_bg_center ul li a:hover{background: #9cb12f;color:#fff;text-decoration:none;}
+/* 内容开始 */
+.content{width: 1000px;margin:0 auto;}
+
+/* 内容左边 */
+.content_left{width: 700px;float: left;background: url(../images/wly.png) repeat-y top right;padding-right: 18px;}
+.content_left_b{border-bottom:1px dashed #e2e2e2;position: relative;margin-right: 16px;}
+.content_left_b h6{color: #3a3e3c;font-family: "微软雅黑";font-size:16px;height: 50px;line-height: 50px;}
+.content_left_b dl dt{float: left;width: 194px;padding-bottom: 12px;}
+.content_left_b dl dt img{width: 192px;height:170px;border:1px solid #d6d6d6;}
+.content_left_b dl dd{float: left;width: 450px;padding: 0 12px;position: relative;height:192px;}
+.content_left_b dl dd p{line-height: 26px;width: 480px;}
+
+.content_left_b .v_span{display: block;width: 149px;height: 38px;line-height: 38px;background: url(../images/fbu.png) no-repeat;padding-left:40px;position:absolute;right: -240px;top:50px;
+	-webkit-transition: all 0.75s;
+	-o-transition: all 0.75s;
+	-moz-transition: all 0.75s;
+	transition: all 0.75s;
+}
+.content_left_b:hover span{background: url(../images/fbu2.png) no-repeat;color: #fff}
+
+
+/* 分页 */
+.paging{padding:25px 0 15px 0;}
+.paging a{display: block;float: left;background: #9cb12f;padding:0 12px ;color: #fff;margin:0 2px;overflow: hidden;height: 24px;line-height:24px;border-radius:2px;}
+.paging a.current{border:1px solid #9cb12f;background: none;color:#9cb12f;font-weight: bold;}
+.paging a:hover{text-decoration:none;}
+/* 底部 */
+.bottom_footer{border-top:1px solid #cecaca;width: 1000px;margin:20px auto 0 auto;height: 70px;}
+.bottom_footer ul li img{margin: 16px 0 0 12px;}
+.head_ch{float: left;}
+.end{height: 24px;line-height: 24px;background: #f6f6f6;text-align: left;padding-right: 10px;margin-right: 14px; }
+.end b{color:#e26867}
+.end em{font-style:normal;padding:0 0 0 8px;}

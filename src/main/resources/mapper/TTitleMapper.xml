@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhangqii.dao.TTitleMapper" >
+  
+  <resultMap type="com.zhangqii.pojo.TitleAndTag" id="titleAndTag">
+  		<id column="tid" property="tid"/>
+  		<result column="tname" property="tname"></result>
+  		<result column="tcount" property="tcount"></result>
+  		<result column="tcount" property="tcount"></result>
+  		<result column="ttag" property="ttag"></result>
+  		<result column="tab" property="tab"></result>
+  		<result column="tpic" property="tpic"></result>
+  		<result column="ttime" property="ttime"></result>
+  		<result column="ttype" property="ttype"></result>
+  		<result column="tstatus" property="tstatus"></result>
+  		<association property="tag" javaType="com.zhangqii.pojo.TTag">
+  			<id column="tid" property="tid"/>
+  			<result column="tcon" property="tcon"/>
+  			<result column="tcount" property="tcount"/>
+  		</association>
+  </resultMap>
+
+  <resultMap id="BaseResultMap" type="com.zhangqii.pojo.TTitle" >
+    <id column="tid" property="tid" jdbcType="INTEGER" />
+    <result column="tname" property="tname" jdbcType="VARCHAR" />
+    <result column="tcount" property="tcount" jdbcType="INTEGER" />
+    <result column="ttag" property="ttag" jdbcType="INTEGER" />
+    <result column="tab" property="tab" jdbcType="VARCHAR" />
+    <result column="tpic" property="tpic" jdbcType="VARCHAR" />
+    <result column="ttime" property="ttime" jdbcType="DATE" />
+    <result column="ttype" property="ttype" jdbcType="BIT" />
+    <result column="tstatus" property="tstatus" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    tid, tname, tcount, ttag, tab, tpic, ttime, ttype, tstatus
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhangqii.pojo.TTitleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_title
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_title
+    where tid = #{tid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_title
+    where tid = #{tid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhangqii.pojo.TTitleExample" >
+    delete from t_title
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhangqii.pojo.TTitle" >
+     <selectKey resultType="int" keyProperty="tid" order="AFTER" >
+     	SELECT LAST_INSERT_ID()
+     </selectKey>
+    insert into t_title (tid, tname, tcount, 
+      ttag, tab, tpic, ttime, 
+      ttype, tstatus)
+    values (#{tid,jdbcType=INTEGER}, #{tname,jdbcType=VARCHAR}, #{tcount,jdbcType=INTEGER}, 
+      #{ttag,jdbcType=INTEGER}, #{tab,jdbcType=VARCHAR}, #{tpic,jdbcType=VARCHAR}, #{ttime,jdbcType=DATE}, 
+      #{ttype,jdbcType=BIT}, #{tstatus,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhangqii.pojo.TTitle" >
+    insert into t_title
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tid != null" >
+        tid,
+      </if>
+      <if test="tname != null" >
+        tname,
+      </if>
+      <if test="tcount != null" >
+        tcount,
+      </if>
+      <if test="ttag != null" >
+        ttag,
+      </if>
+      <if test="tab != null" >
+        tab,
+      </if>
+      <if test="tpic != null" >
+        tpic,
+      </if>
+      <if test="ttime != null" >
+        ttime,
+      </if>
+      <if test="ttype != null" >
+        ttype,
+      </if>
+      <if test="tstatus != null" >
+        tstatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tid != null" >
+        #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="tname != null" >
+        #{tname,jdbcType=VARCHAR},
+      </if>
+      <if test="tcount != null" >
+        #{tcount,jdbcType=INTEGER},
+      </if>
+      <if test="ttag != null" >
+        #{ttag,jdbcType=INTEGER},
+      </if>
+      <if test="tab != null" >
+        #{tab,jdbcType=VARCHAR},
+      </if>
+      <if test="tpic != null" >
+        #{tpic,jdbcType=VARCHAR},
+      </if>
+      <if test="ttime != null" >
+        #{ttime,jdbcType=DATE},
+      </if>
+      <if test="ttype != null" >
+        #{ttype,jdbcType=BIT},
+      </if>
+      <if test="tstatus != null" >
+        #{tstatus,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhangqii.pojo.TTitleExample" resultType="java.lang.Integer" >
+    select count(*) from t_title
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_title
+    <set >
+      <if test="record.tid != null" >
+        tid = #{record.tid,jdbcType=INTEGER},
+      </if>
+      <if test="record.tname != null" >
+        tname = #{record.tname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tcount != null" >
+        tcount = #{record.tcount,jdbcType=INTEGER},
+      </if>
+      <if test="record.ttag != null" >
+        ttag = #{record.ttag,jdbcType=INTEGER},
+      </if>
+      <if test="record.tab != null" >
+        tab = #{record.tab,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tpic != null" >
+        tpic = #{record.tpic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ttime != null" >
+        ttime = #{record.ttime,jdbcType=DATE},
+      </if>
+      <if test="record.ttype != null" >
+        ttype = #{record.ttype,jdbcType=BIT},
+      </if>
+      <if test="record.tstatus != null" >
+        tstatus = #{record.tstatus,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_title
+    set tid = #{record.tid,jdbcType=INTEGER},
+      tname = #{record.tname,jdbcType=VARCHAR},
+      tcount = #{record.tcount,jdbcType=INTEGER},
+      ttag = #{record.ttag,jdbcType=INTEGER},
+      tab = #{record.tab,jdbcType=VARCHAR},
+      tpic = #{record.tpic,jdbcType=VARCHAR},
+      ttime = #{record.ttime,jdbcType=DATE},
+      ttype = #{record.ttype,jdbcType=BIT},
+      tstatus = #{record.tstatus,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhangqii.pojo.TTitle" >
+    update t_title
+    <set >
+      <if test="tname != null" >
+        tname = #{tname,jdbcType=VARCHAR},
+      </if>
+      <if test="tcount != null" >
+        tcount = #{tcount,jdbcType=INTEGER},
+      </if>
+      <if test="ttag != null" >
+        ttag = #{ttag,jdbcType=INTEGER},
+      </if>
+      <if test="tab != null" >
+        tab = #{tab,jdbcType=VARCHAR},
+      </if>
+      <if test="tpic != null" >
+        tpic = #{tpic,jdbcType=VARCHAR},
+      </if>
+      <if test="ttime != null" >
+        ttime = #{ttime,jdbcType=DATE},
+      </if>
+      <if test="ttype != null" >
+        ttype = #{ttype,jdbcType=BIT},
+      </if>
+      <if test="tstatus != null" >
+        tstatus = #{tstatus,jdbcType=BIT},
+      </if>
+    </set>
+    where tid = #{tid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhangqii.pojo.TTitle" >
+    update t_title
+    set tname = #{tname,jdbcType=VARCHAR},
+      tcount = #{tcount,jdbcType=INTEGER},
+      ttag = #{ttag,jdbcType=INTEGER},
+      tab = #{tab,jdbcType=VARCHAR},
+      tpic = #{tpic,jdbcType=VARCHAR},
+      ttime = #{ttime,jdbcType=DATE},
+      ttype = #{ttype,jdbcType=BIT},
+      tstatus = #{tstatus,jdbcType=BIT}
+    where tid = #{tid,jdbcType=INTEGER}
+  </update>
+  
+  <select id="findByStatusLimit" parameterType="com.zhangqii.pojo.Page" resultType="com.zhangqii.pojo.TTitle">
+  		select * from t_title where tstatus=#{status} and ttype=#{type}
+  		  <if test="ttag!=null">
+  		     and ttag=#{ttag}
+  		  </if>
+  		 order by tid desc 
+  		 limit #{currentSum},#{row}
+  </select>
+  <select id="findTitleAndTagLimit" parameterType="com.zhangqii.pojo.Page" resultMap="titleAndTag">
+  		SELECT t_title.*,t_tag.* 
+		FROM t_title ,t_tag 
+		WHERE t_title.ttag=t_tag.tid and  tstatus=#{status}
+		order by t_title.tid desc
+		limit #{currentSum},#{row}
+  </select>
+  <select id="findByCountLimit" parameterType="com.zhangqii.pojo.Page" resultType="com.zhangqii.pojo.TTitle">
+  		select * from t_title
+  		 order by tcount desc 
+  		 limit #{currentSum},#{row}
+  </select>
+  <select id="findByTagLimit" parameterType="com.zhangqii.pojo.Page" resultType="com.zhangqii.pojo.TTitle">
+  		select * from t_title
+  		where ttag=#{tid} and tstatus=#{status}
+  		order by tid desc 
+  		limit #{currentSum},#{row}
+  </select>
+  <select id="findMaxTidToTid" parameterType="int" resultType="com.zhangqii.pojo.TTitle">
+      select * from t_title t1 where t1.tid =(select max(tid) from t_title t2 where t2.tid &lt; #{value} )
+  </select>
+  <select id="findMinTidToTid" parameterType="int" resultType="com.zhangqii.pojo.TTitle">
+  	select * from t_title t1 where t1.tid =(select min(tid) from t_title t2 where t2.tid  &gt; #{value} )
+  </select>
+</mapper>
