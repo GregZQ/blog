@@ -18,5 +18,15 @@ public class PageUtils {
 			pageBean.setTotalPage(pageBean.getTotalPage()+1);
 		}
 		return pageBean;
-	}	
+	}
+	/**
+	 * 得到一个页面的页码
+	 */
+	public  static  Integer getPageNumber(String currentPage){
+		Integer pageNumber=1;
+		if (currentPage==null||currentPage.trim().equals("")){
+			return pageNumber;
+		}
+		return Integer.valueOf(currentPage);
+	}
 }

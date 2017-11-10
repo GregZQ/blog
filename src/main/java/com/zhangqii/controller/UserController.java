@@ -25,7 +25,7 @@ public class UserController {
 			PASSWORD!=null&&password.equals(PASSWORD)){
 			request.getSession().setAttribute("user", username);
 			
-			return "redirect:back/back";
+			return "redirect:back/title/1";
 		}else{
 			return "redirect:/";
 		}

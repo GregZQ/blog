@@ -7,9 +7,9 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>张麒个人博客 -一个java开发者的记录</title>
-	<link rel="stylesheet" type="text/css" href="../css/list.css">
-	<script type="text/javascript" src="../js/jquery-1.11.0.min.js"></script>
-	<script type="text/javascript" src="../js/index.js"></script>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/list.css">
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/index.js"></script>
 
 </head>
 <body>

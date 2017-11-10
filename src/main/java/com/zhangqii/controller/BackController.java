@@ -6,22 +6,16 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.zhangqii.pojo.*;
+import com.zhangqii.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.zhangqii.pojo.Page;
-import com.zhangqii.pojo.PageBean;
-import com.zhangqii.pojo.TMessage;
-import com.zhangqii.pojo.TMsay;
-import com.zhangqii.pojo.TTag;
-import com.zhangqii.pojo.TTitle;
-import com.zhangqii.service.MessageService;
-import com.zhangqii.service.SayService;
-import com.zhangqii.service.TagSerivce;
-import com.zhangqii.service.TitleService;
 import com.zhangqii.utils.PageUtils;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @Controller
@@ -31,13 +25,15 @@ public class BackController {
 	private TagSerivce tagSerivce;
 	@Autowired
 	private TitleService titleService;
-	
+	@Autowired
+	private ConService conService;
 	@Autowired
 	private SayService sayService;
-	
 	@Autowired
 	private MessageService messageService;
 	/**
+	 *
+	 *
 	 * 后台文章的列出,需要四个参数
 	 * 有一个status类型，1为发布
 	 *                  0为草稿
@@ -46,16 +42,14 @@ public class BackController {
 	 *       tag   文章标签
 	 *
 	 */
-	@RequestMapping("/back")
-	public String back(HttpServletRequest request,Model model){
-		//获取文章的状态，1发布，0草稿
-		String stat="1";
-		if (request.getParameter("status")!=null){
-			stat=request.getParameter("status");
-		}
-		Boolean status=Integer.valueOf(stat)==1?true:false;
+	@RequestMapping(value = "/title/{id}",method = RequestMethod.GET)
+	public String back( @PathVariable(value = "id") String sta,HttpServletRequest request, Model model){
+		/**
+		 * sta:1表示原创，0表示转载
+		 */
+		Boolean status=Integer.valueOf(sta)==1?true:false;
 		Integer count=this.titleService.findByStatusCount(status);
-		//获取文章类型 1原创 0转载
+		//获取文章类型 1原创 0转载,默认为原创
 		String typ="1";
 		if (request.getParameter("type")!=null){
 			typ=request.getParameter("type");
@@ -67,11 +61,7 @@ public class BackController {
 			ttag=null;
 		}
 		//获取当前页数
-		String current=request.getParameter("currentPage");
-		Integer currentPage=1;
-		if (current!=null&&!current.equals("")&&!current.trim().equals("")){
-			currentPage=Integer.valueOf(current);
-		}
+		Integer currentPage=PageUtils.getPageNumber(request.getParameter("currentPage"));
 		//获取文章列表
 		List<TTitle> list=this.titleService.findByStatusLimit(new Page(currentPage, 10,status,type,ttag));
 		PageBean pageBean=PageUtils.getPageUtils(list, count, currentPage, 10);
@@ -81,87 +71,95 @@ public class BackController {
 		model.addAttribute("tagList",tagList);
 		//把文章条件回显
 		model.addAttribute("tag", ttag);
-		model.addAttribute("status",stat);
+		model.addAttribute("status",sta);
 		model.addAttribute("type", typ);
-		return "back/back";
+		return "back/title";
 	}
-
-	@RequestMapping("/titleedit")
-	public String edit(Model model){
+	/**
+	 * 到文章添加页面
+	 * /back/edittitle method:get
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/edittitle",method = RequestMethod.GET)
+	public String edit(HttpServletRequest request,Model model){
 		//获取标签列表
 		List<TTag>tagList=this.tagSerivce.findAllTag();
 		model.addAttribute("tagList", tagList);
-		return "back/edit";
+		model.addAttribute("update","0");
+		return "back/titleedit";
 	}
-	@RequestMapping("/sayedit")
-	public String mysay(){
-		return "back/sayeditor";
+	/**
+	 *
+	 * 到文章编辑页面
+	 * /back/edittilte/{id}
+	 */
+	@RequestMapping(value = "/edittitle/{id}",method = RequestMethod.GET)
+	public  String editPage(@PathVariable(value = "id") Integer id,HttpServletRequest request,Model model){
+		TTitle title=this.titleService.findById(id);
+		model.addAttribute("title",title);
+		TCon tcon=this.conService.findById(title.getTid());
+		model.addAttribute("tcon",tcon);
+		List<TTag> tagList=this.tagSerivce.findAllTag();
+		model.addAttribute("tagList", tagList);
+		return "back/titleedit";
 	}
 	//到文章标签页面
-	@RequestMapping("/tagedit")
+	@RequestMapping(value = "/tag",method = RequestMethod.GET)
 	public String ttag(Model model,HttpServletRequest request){
 		//得到当前第几页
-		String val=request.getParameter("currentPage");
-		int currentPage=1;
-		if (val!=null&&!val.equals("")){
-			currentPage=Integer.valueOf(val);
-		}
-		
+		int currentPage=PageUtils.getPageNumber(request.getParameter("currentPage"));
+		//查询全部标签数量（以后放在缓存中）
 		int Count=tagSerivce.findTTagCount();
-		
-		//��ѯÿһ��
-		
 		/**
 		 * 分页查询
 		 */
 		List<TTag>list=this.tagSerivce.findByLimit(new Page(currentPage,10));
 		PageBean<TTag> pageBean=PageUtils.getPageUtils(list, Count, currentPage, 10);
-		
 		model.addAttribute("pageBean", pageBean);
 		return "back/tag";
 	}
 	/**
-	 * 查询说的
+	 * 到闲言碎语列表页面
+	 * /
 	 */
-	@RequestMapping("/mysay")
+	@RequestMapping(value = "/says",method = RequestMethod.GET)
 	public String mySay(HttpServletRequest request,Model model){
 
-		/**
-		 * 查询当前第几页
-		 */
+		int currentPage=PageUtils.getPageNumber(
+				request.getParameter("currentPage"));
+        //后期放在缓存中
 		int count=sayService.findAllCount();
-		int currentPage=1;
-		
-		String curr=request.getParameter("currentPage");
-		if (curr!=null&&!curr.trim().equals("")){
-			currentPage=Integer.valueOf(curr);
-		}
+
 		List<TMsay> list=this.sayService.findMySayByLimit(new Page(currentPage, 10));
 		
 		PageBean pageBean=PageUtils.getPageUtils(list, count, currentPage, 10);
 		model.addAttribute("pageBean",pageBean);
-		return "/back/mysay";
+		return "/back/says";
+	}
+
+	/**
+	 * 到添加闲言碎语页面
+	 * @return
+	 */
+	@RequestMapping("/editsays")
+	public String mysay(){
+		return "back/saysedit";
 	}
 	/**
 	 * 查询当前留言
+	 * /back/message method:get
 	 */
-	@RequestMapping("/message")
+	@RequestMapping(value = "/message",method = RequestMethod.GET)
 	public String messageList(HttpServletRequest request,Model model){
-		/**
-		 * 
-		 */
-		String current=request.getParameter("currentPage");
-		Integer currentPage=1;
-		if (current!=null&&!current.trim().equals("")){
-			currentPage=Integer.valueOf(current);
-		}
-		Integer allCount=messageService.findAllCount();
+		Integer currentPage=PageUtils.getPageNumber(
+				request.getParameter("currentPage"));
+		Integer count=messageService.findAllCount();
 		
-		model.addAttribute("allCount", allCount);
+		model.addAttribute("allCount", count);
 		List<TMessage> messageList=this.messageService.findByLimit(new Page(currentPage, 10));
-		PageBean pageBean=PageUtils.getPageUtils(messageList, allCount, currentPage, 10);
+		PageBean pageBean=PageUtils.getPageUtils(messageList, count, currentPage, 10);
 		model.addAttribute("pageBean", pageBean);
-		return "back/messagelist";
-		
+		return "back/message";
 	}
 }

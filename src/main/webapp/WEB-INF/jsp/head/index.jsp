@@ -48,7 +48,7 @@
 	  <c:forEach items="${titleList }" var="title">
 		<div class="content_left_b">
 			<h6>  
-			 <a href="${pageContext.request.contextPath }/title/${title.tid}">	
+			 <a href="${pageContext.request.contextPath }/title/${title.tid}.html">
 			  <c:choose>
 			    <c:when test="${title.tstatus==true }">
 				 	【原创】
@@ -62,13 +62,13 @@
 			</h6>
 		 
 			<dl class="cf">
-				<dt><a href="${pageContext.request.contextPath }/title/${title.tid}"><img src="http://47.94.18.185/pic/blog/titleimage/${title.tpic }" alt="" /></a></dt>
+				<dt><a href="${pageContext.request.contextPath }/title/${title.tid}.html"><img src="http://47.94.18.185/pic/blog/titleimage/${title.tpic }" alt="" /></a></dt>
 				
 				<dd>
 					<p style="color: black;">
 						${title.tab }
 					</p>	
-					<a href="${pageContext.request.contextPath }/title/${title.tid}">阅读更多>></a>
+					<a href="${pageContext.request.contextPath }/title/${title.tid}.html">阅读更多>></a>
 				</dd>
 			</dl>
 			<div class="footer"><em>发布时间：<fmt:formatDate value="${title.ttime }"  pattern="yyyy-MM-dd"/></em><em>分类：<b>[${title.tag.tcon }]</b></em></div>
@@ -87,17 +87,17 @@
 				<c:choose>
 					<c:when test="${i.index<=2 }">
 						<c:if test="${i.index==0 }">
-						<li><b class="ph1">1</b><a href="${pageContext.request.contextPath }/title/${title.tid}">${title.tname }</a></li>
+						<li><b class="ph1">1</b><a href="${pageContext.request.contextPath }/title/${title.tid}.html">${title.tname }</a></li>
 						</c:if>
 						<c:if test="${i.index==1 }">
-						<li><b class="ph2">2</b><a href="${pageContext.request.contextPath }/title/${title.tid}">${title.tname }</a></li>
+						<li><b class="ph2">2</b><a href="${pageContext.request.contextPath }/title/${title.tid}.html">${title.tname }</a></li>
 						</c:if>
 						<c:if test="${i.index==2 }">
-						<li><b class="ph3">3</b><a href="${pageContext.request.contextPath }/title/${title.tid}">${title.tname }</a></li>
+						<li><b class="ph3">3</b><a href="${pageContext.request.contextPath }/title/${title.tid}.html">${title.tname }</a></li>
 						</c:if>
 					</c:when>
 					<c:otherwise>
-						<li><b>${i.index+1 }</b><a href="${pageContext.request.contextPath }/title/${title.tid}">${title.tname }</a></li>
+						<li><b>${i.index+1 }</b><a href="${pageContext.request.contextPath }/title/${title.tid}.html">${title.tname }</a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
@@ -109,7 +109,7 @@
 			<h5>标签管理</h5>
 			<ul class="zjfk cf">
 				<c:forEach items="${tagList }" var="tag">	
-					<li><a href="${pageContext.request.contextPath }/title/tag?tid=${tag.tid}">${tag.tcon }(${tag.tcount })</a></li>
+					<li><a href="${pageContext.request.contextPath }/title/tag/${tag.tid}.html?currentPage=1">${tag.tcon }(${tag.tcount })</a></li>
 				</c:forEach>	
 			</ul>
 		</div>

@@ -1,3 +1,12 @@
+$(".a_delete").on("click",function (event) {
+	event.preventDefault();//使a自带的方法失效
+	if (confirm("您确定删除吗")){
+		$.ajax({
+			type:"DELETE",
+			url:"";//未完成，文件的删除
+		});
+	}
+});
 /**
  * 添加文章
  * 添加为1
@@ -6,8 +15,8 @@ function addTitle(){
 	var con=editor.txt.html();
 	if (verification()){
 		var options={
-			url:"../title/addtitle",
-			type:"post",
+			url:"../title",
+			type:"POST",
 			data:{con:con,flag:"1"},
 			success:function(data){
 				alert(data);
@@ -23,7 +32,7 @@ function  saveTitle(){
 	var con=editor.txt.html();
 	if (verification()){
 		var options={
-			url:"../title/addtitle",
+			url:"../title",
 			type:"post",
 			data:{con:con,flag:"0"},
 			success:function(data){

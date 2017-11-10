@@ -35,27 +35,40 @@ public class TitleController {
 	@Autowired
 	private TagSerivce tagService;
 	@Value("${STORE_PATH}")
-	private String STORE_PATH;  
-	
+	private String STORE_PATH;
+
 	/**
-	 *根据标签查询文章
-	 * @param model
-	 * @param request
+	 * 到文章列表页面，/title?currentPage  method=GET
 	 * @return
 	 */
-	@RequestMapping(value = "/tag",method = RequestMethod.GET)
-	public String tagList(Model model,HttpServletRequest request){
-		String td=request.getParameter("tid");
-		if (td==null||td.trim().equals("")){
+	@RequestMapping(value = "",method = RequestMethod.GET)
+	public String titlelist(Model model,HttpServletRequest request){
+		Integer currentPage=PageUtils.getPageNumber(
+				request.getParameter("currentPage"));
+		//查询共有多少文章,用于分页显示（后期将其放入缓存中）
+		int count=this.titleService.findByStatusCount(true);
+
+
+		//查询前10篇文章，在首页显示
+		List<TitleAndTag>titleList=titleService.findTitleAndTagLimit(new Page(currentPage, 10, true));
+
+		PageBean page=PageUtils.getPageUtils(titleList, count, currentPage, 10);
+		model.addAttribute("pageBean", page);
+		return "head/titlelist";
+	}
+	/**
+	 *根据标签查询文章
+	 * /title/tag/{id}?currentPage=** method=get
+	 */
+	@RequestMapping(value = "/tag/{id}",method = RequestMethod.GET)
+	public String tagList(@PathVariable(value = "id") Integer tid,Model model,HttpServletRequest request){
+		if (tid==null){
 			return "head/taglist";
 		}
-		Integer tid=Integer.valueOf(td);
 		//查看第几页
-		Integer currentPage=1;
-		String current=request.getParameter("currentPage");
-		if (current!=null&&!current.trim().equals("")){
-			currentPage=Integer.valueOf(current);
-		}
+		Integer currentPage=PageUtils.getPageNumber(
+				request.getParameter("currentPage"));
+
 		//查看是什么标签
 		TTag tag=this.tagService.findByTid(tid);
 		
@@ -68,8 +81,17 @@ public class TitleController {
 		model.addAttribute("tag", tag);
 		return "head/taglist";
 	}
-	@RequestMapping("/{tid}")
-	public String Content(HttpServletRequest request,Model model,@PathVariable Integer tid){
+
+	/**
+	 * /title/{id}.html  get
+	 *  查询某一具体文章
+	 * @param request
+	 * @param model
+	 * @param tid
+	 * @return
+	 */
+	@RequestMapping(value = "/{id}.html",method = RequestMethod.GET)
+	public String Content(HttpServletRequest request,Model model,@PathVariable(value = "id") Integer tid){
 		/**
 		 * 统计每篇文章的访问量
 		 * 调用jedis，首先查看jedis中是否有当前文章，如果当前文章不存在，添加
@@ -95,7 +117,7 @@ public class TitleController {
 		jedis.close();
 
 		/**
-		 * 把文章数添加
+		 * 添加文章访问量
 		 */
 		model.addAttribute("titleCount", titleCount);
 
@@ -120,30 +142,13 @@ public class TitleController {
 		model.addAttribute("title1", title1);
 		return "head/content";
 	}
-	/**
-	 * 到文章列表页面
-	 * @return
-	 */
+	/*
+	* 添加文章（包括新文章与草稿）
+	* flag==1的话新文章
+	*       0的话保存草稿
+	* /title  method :POST
+	* */
 	@RequestMapping("")
-	public String titlelist(Model model,HttpServletRequest request){
-		Integer currentPage=1;
-		String cur=request.getParameter("currentPage");
-		if (cur!=null&&!cur.trim().equals("")){
-			currentPage=Integer.valueOf(cur);
-		}
-		//查询共有多少文章
-		int count=this.titleService.findByStatusCount(true);
-		
-		
-		//查询前INDEX_TILTE篇文章，在首页显示
-	   List<TitleAndTag>titleList=titleService.findTitleAndTagLimit(new Page(currentPage, 10, true));
-		
-	   PageBean page=PageUtils.getPageUtils(titleList, count, currentPage, 10);
-	   model.addAttribute("pageBean", page);
-		return "head/titlelist";
-	}
-	//添加新文章
-	@RequestMapping("/addtitle")
 	@ResponseBody
 	public String addTitle(TTitle ttitle,TCon tcon,String flag,MultipartFile uploadFile){
 		//储存图片
@@ -191,22 +196,6 @@ public class TitleController {
 		return "redirect:/back/back";
 	}
 
-	/**
-	 * 文章编辑
-	 * 先到编辑页面
-	 */
-	@RequestMapping("/updatepage")
-	public  String editPage(HttpServletRequest request,Model model){
-		Integer id=Integer.valueOf(request.getParameter("tid"));
-		TTitle title=this.titleService.findById(id);
-		model.addAttribute("title",title);
-		TCon tcon=this.conService.findById(title.getTid());
-		model.addAttribute("tcon",tcon);
-		
-		List<TTag> tagList=this.tagService.findAllTag();
-		model.addAttribute("tagList", tagList);
-		return "back/edit";
-	}
 	/**
 	 * 更新文章
 	 */

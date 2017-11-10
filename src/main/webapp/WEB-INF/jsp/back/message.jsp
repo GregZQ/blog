@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -8,8 +10,8 @@
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/list.css">
 	<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css"> 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.11.0.min.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/index.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/tag.js"></script>
+
 </head>
 <body>
 
@@ -24,53 +26,38 @@
 		<li><a href="${pageContext.request.contextPath }/back/message"><span class="nav1">留言管理</span><span class="nav2">留言管理</span></a></li>
 		<li><a href="${pageContext.request.contextPath }/back/says"><span class="nav1">闲言碎语</span><span class="nav2">闲言碎语</span></a></li>
 		<li><a href="${pageContext.request.contextPath }/back/tag"><span class="nav1">类别管理</span><span class="nav2">类别管理</span></a></li>
-
 	</ul>
 </div>
 <!--引导-->
 
-
-<div class="mb_bg cf">
-	<div class="mb_bg_center">
-		<ul>
-			<li><a href="#">[首页]</a></li>
-			<li><a href="#" class="dq">类别管理</a></li>
-		</ul>
-	</div>
-</div>
-
 <!-- 内容开始 -->
 <div class="content cf">
-		<form  class="form-inline" action="${pageContext.request.contextPath }/tag/addtag" method="post" role="form">
-		 <button type="submit" class="btn btn-default">添加新类别</button>
-		 <div class="form-group">
-		    <label class="sr-only" for="name">名称</label>
-		    <input type="text" class="form-control" name="tcon" id="name" placeholder="请输入名称">
-		  </div>
-		</form>
 
 		<table class="table table-striped">
 					  <thead>
 					    <tr>
-					      <th>类别名称</th>
-					      <th>文章总数</th>
+					      <th>留言人</th>
+					      <th>留言内容</th>
+					      <th>留言邮箱</th>
+					      <th>留言时间</th>
 					      <th>操作</th>
 					    </tr>
 					  </thead>
 					  <tbody>
-					    <c:forEach var="tag" items="${pageBean.list}">
+					     <c:forEach items="${pageBean.list }" var="message">
 						    <tr>
-						      <td>${tag.tcon }</td>
-							  <td id="tcount_${tag.tid}">${tag.tcount }</td>
-							  <td><a href="${pageContext.request.contextPath}/tag/delete?tid=${tag.tid}" onclick="javascript:return del('tcount_${tag.tid }')">删除</a>|<a href="#" onclick="javascript:return tagchange(${tag.tid})">更改名称</a></td>
+						      <td>${message.mname}</td>
+						      <td>${message.mname }</td>
+						      <td>${message.mmail }</td>
+							  <td><fmt:formatDate value="${message.mtime }" pattern="yyyy-MM-dd" /></td>
+							  <td><a href="${pageContext.request.contextPath }/message/delete?mid=${message.mid}">删除</a></td>
 						    </tr>
-						 </c:forEach>   
+						  </c:forEach>     
 					  </tbody>
 		</table>
 		<div class="paging">
-		  
-		    <c:if test="${pageBean.currentPage>1 }">
-			<a href="${pageContext.request.contextPath }/back/tag?currentPage=${pageBean.currentPage-1}">上一页</a>
+		   <c:if test="${pageBean.currentPage>1 }">
+			<a href="${pageContext.request.contextPath }/back/message?currentPage=${pageBean.currentPage-1}">上一页</a>
 			</c:if>
 			<c:choose>
 				<c:when test="${pageBean.totalPage<=10 }">
@@ -96,12 +83,12 @@
 						<a href="javascript:void(0)" class="current">${i }</a>
 					</c:when>
 					<c:otherwise>
-						<a href="${pageContext.request.contextPath }/back/tagedit?currentPage=${i}">${i }</a>
+						<a href="${pageContext.request.contextPath }/back/message?currentPage=${i}">${i }</a>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
 			<c:if test="${pageBean.currentPage<pageBean.totalPage }">
-				<a href="${pageContext.request.contextPath }/back/tagedit?currentPage=${pageBean.currentPage+1}">下一页</a>
+				<a href="${pageContext.request.contextPath }/back/message?currentPage=${pageBean.currentPage+1}">下一页</a>
 			</c:if>
 		</div>
 
@@ -118,16 +105,4 @@
 
 
 </body>
-<script type="text/javascript">
-	function del(id){
-		if (tagtest(id)){
-			if (confirm("您确认删除吗，删除之后不可恢复！！！")){
-				return true;
-			}else{
-				return false;
-			}
-		}
-		return false;
-	}
-</script>
 </html>
