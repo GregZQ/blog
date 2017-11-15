@@ -3,6 +3,7 @@ package com.zhangqii.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.zhangqii.dao.TTagMapper;
@@ -14,7 +15,6 @@ import com.zhangqii.pojo.TTagExample.Criterion;
 
 @Service
 public class TagSerivce {
-	
 	@Autowired
 	private TTagMapper tTagMapper; 
 	public int  findTTagCount(){

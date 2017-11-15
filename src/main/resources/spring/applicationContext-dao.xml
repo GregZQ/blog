@@ -13,8 +13,7 @@
 	 http://www.springframework.org/schema/tx/spring-tx.xsd
 	 http://www.springframework.org/schema/util
 	 http://www.springframework.org/schema/util/spring-util.xsd">
-	
-	<context:property-placeholder location="classpath:resource/db.properties" />
+
 	
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
 		destroy-method="close">

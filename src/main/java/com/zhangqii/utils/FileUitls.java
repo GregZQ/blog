@@ -20,4 +20,8 @@ public class FileUitls {
 		out.close();
 		in.close();
 	}
+	/*
+	* 读取配置文件
+	* */
+
 }

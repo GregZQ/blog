@@ -26,9 +26,8 @@ public class SayService {
 	public List<TMsay> findMySayByLimit(Page page) {
 		return tMsayMapper.findMySayByLimit(page);
 	}
-	public void delete(TMsay msay) {
-		tMsayMapper.deleteByPrimaryKey(msay.getMid());
-		
-	}
 
+    public void deleteById(Integer id) {
+    	this.tMsayMapper.deleteByPrimaryKey(id);
+	}
 }

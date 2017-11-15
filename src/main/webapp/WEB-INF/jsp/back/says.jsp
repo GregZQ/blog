@@ -9,8 +9,6 @@
 	<title>张麒的个人博客</title>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/list.css">
 	<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css"> 
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.11.0.min.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/index.js"></script>
 
 </head>
 <body>
@@ -24,7 +22,7 @@
 		<li><a href="${pageContext.request.contextPath }/back/editsays"><span class="nav1">写闲话</span><span class="nav2">写闲话</span></a></li>
 		<li><a href="${pageContext.request.contextPath }/back/title/1"><span class="nav1">文章管理</span><span class="nav2">文章管理</span></a></li>
 		<li><a href="${pageContext.request.contextPath }/back/message"><span class="nav1">留言管理</span><span class="nav2">留言管理</span></a></li>
-		<li><a href="${pageContext.request.contextPath }/back/says"><span class="nav1">闲言碎语</span><span class="nav2">闲言碎语</span></a></li>
+		<li><a href="${pageContext.request.contextPath }/back/say"><span class="nav1">闲言碎语</span><span class="nav2">闲言碎语</span></a></li>
 		<li><a href="${pageContext.request.contextPath }/back/tag"><span class="nav1">类别管理</span><span class="nav2">类别管理</span></a></li>
 
 	</ul>
@@ -56,14 +54,14 @@
 						    <tr>
 						      <td>${mysay.mcon }</td>
 							  <td><fmt:formatDate value="${mysay.mtime }"  pattern="yyyy-MM-dd"/></td>
-							  <td><a href="${pageContext.request.contextPath }/say/delete?mid=${mysay.mid}">删除</a>|更改</td>
+							  <td><a href="${pageContext.request.contextPath }/say/${mysay.mid}" id="${mysay.mid}" class="a_delete">删除</a>|更改</td>
 						    </tr>
 						  </c:forEach>  
 					  </tbody>
 		</table>
 		<div class="paging">
 		   <c:if test="${pageBean.currentPage>1 }">
-			<a href="${pageContext.request.contextPath }/back/mysay?currentPage=${pageBean.currentPage-1}">上一页</a>
+			<a href="${pageContext.request.contextPath }/back/say?currentPage=${pageBean.currentPage-1}">上一页</a>
 			</c:if>
 			<c:choose>
 				<c:when test="${pageBean.totalPage<=10 }">
@@ -89,12 +87,12 @@
 						<a href="javascript:void(0)" class="current">${i }</a>
 					</c:when>
 					<c:otherwise>
-						<a href="${pageContext.request.contextPath }/back/mysay?currentPage=${i}">${i }</a>
+						<a href="${pageContext.request.contextPath }/back/say?currentPage=${i}">${i }</a>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
 			<c:if test="${pageBean.currentPage<pageBean.totalPage }">
-				<a href="${pageContext.request.contextPath }/back/mysay?currentPage=${pageBean.currentPage+1}">下一页</a>
+				<a href="${pageContext.request.contextPath }/back/say?currentPage=${pageBean.currentPage+1}">下一页</a>
 			</c:if>
 		</div>
 
@@ -112,3 +110,6 @@
 
 </body>
 </html>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/index.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/say.js"></script>

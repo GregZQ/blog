@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!DOCTYPE html>
+<html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>张麒个人博客</title>
@@ -10,7 +10,6 @@
 	<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css"> 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/index.js"></script>
-
 </head>
 <body>
 
@@ -23,7 +22,7 @@
 		<li><a href="${pageContext.request.contextPath }/back/editsays"><span class="nav1">写闲话</span><span class="nav2">写闲话</span></a></li>
 		<li><a href="${pageContext.request.contextPath }/back/title/1"><span class="nav1">文章管理</span><span class="nav2">文章管理</span></a></li>
 		<li><a href="${pageContext.request.contextPath }/back/message"><span class="nav1">留言管理</span><span class="nav2">留言管理</span></a></li>
-		<li><a href="${pageContext.request.contextPath }/back/says"><span class="nav1">闲言碎语</span><span class="nav2">闲言碎语</span></a></li>
+		<li><a href="${pageContext.request.contextPath }/back/say"><span class="nav1">闲言碎语</span><span class="nav2">闲言碎语</span></a></li>
 		<li><a href="${pageContext.request.contextPath }/back/tag"><span class="nav1">类别管理</span><span class="nav2">类别管理</span></a></li>
 
 	</ul>
@@ -43,7 +42,6 @@
 				<li><a href="${pageContext.request.contextPath }/back/title/1">文章管理</a></li>
 				<li><a href="${pageContext.request.contextPath }/back/title/0" class="dq">草稿箱</a></li>
 			</c:if>
-			
 		</ul>
 	</div>
 </div>
@@ -51,7 +49,7 @@
 <!-- 内容开始 -->
 <div class="content cf">
 		<label>标签：</label>
-		<form action="${pageContext.request.contextPath }/back/title" method="GET">
+		<form action="${pageContext.request.contextPath }/back/title/${status}" method="GET">
 		<select name="tag">
 			<option value="0">全部</option>
 			<c:forEach items="${tagList }" var="tagg">
@@ -77,7 +75,6 @@
 			</c:if>
 			
 		</select>
-		<input type="hidden" name="status" value="${status }"/>
 		<input type="submit" value="提交" />
 		</form>
 		<table class="table table-striped">
@@ -96,7 +93,7 @@
 							      <td>${page.tcount }</td>
 							      <td>禁止评论</td>
 								  <td>
-								  	<a href="${pageContext.request.contextPath }/title/${page.tid}" class="a_delete">删除</a>
+								  	<a href="${pageContext.request.contextPath }/title/${page.tid}" id="${page.tid}" class="a_delete">删除</a>
 								  	<a href="${pageContext.request.contextPath }/back/edittitle/${page.tid}">编辑</a>
 								  	<a href="">置顶</a>
 								  </td>
@@ -106,7 +103,7 @@
 		</table>
 		<div class="paging">
 		   <c:if test="${paegBean.currentPage>1 }">
-			<a href="${pageContext.request.contextPath }/back/back?currentPage=${pageBean.currentPage-1}&status=${status}&type=${type }&tag=${tag}">上一页</a>
+			<a href="${pageContext.request.contextPath }/back/title/${status}?currentPage=${pageBean.currentPage-1}&type=${type }&tag=${tag}">上一页</a>
 			</c:if>
 			<c:choose>
 				<c:when test="${pageBean.totalPage<10}">
@@ -132,12 +129,12 @@
 				<a href="javascript:void(0)" class="current">${i }</a>
 				</c:when>
 				<c:otherwise>
-				<a href="${pageContext.request.contextPath }/back/back?currentPage=${i}&status=${status}&type=${type }&tag=${tag}">${i }</a>
+				<a href="${pageContext.request.contextPath }/back/title/${status}?currentPage=${i}&status=${status}&type=${type }&tag=${tag}">${i }</a>
 				</c:otherwise>
 				</c:choose>	
 			</c:forEach>
 			  <c:if test="${pageBean.currentPage<pageBean.totalPage }">
-				<a href="${pageContext.request.contextPath }/back/back?currentPage=${pageBean.currentPage+1}&status=${status}&type=${type }&tag=${tag}">下一页</a>
+				<a href="${pageContext.request.contextPath }/back/title/${status}?currentPage=${pageBean.currentPage+1}&type=${type }&tag=${tag}">下一页</a>
 			</c:if>
 		</div>
 	</div>
@@ -150,3 +147,4 @@
 </div>
 </body>
 </html>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/title.js"></script>

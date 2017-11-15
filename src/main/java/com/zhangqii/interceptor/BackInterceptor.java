@@ -27,8 +27,19 @@ public class BackInterceptor implements HandlerInterceptor {
 		HttpSession session=arg0.getSession();
 		if (session!=null&&session.getAttribute("user")!=null){
 			return true;
-		}else{
-			arg1.sendRedirect("/Zhang/login");
+		}else if (arg0.getMethod().trim().toLowerCase().equals("get")&&!arg0.getRequestURI().contains("back")){
+			/*
+			* 这是放行title say下面
+			* */
+			return true;
+		}else if (arg0.getRequestURI().trim().substring(1,8).equals("message")&&
+				(arg0.getMethod().trim().toLowerCase().equals("get")||
+				  arg0.getMethod().trim().toLowerCase().equals("post"))
+				){
+			return true;
+		}
+		else{
+			arg1.sendRedirect("/login");
 			return false;
 		}
 	}

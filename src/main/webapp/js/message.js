@@ -17,3 +17,17 @@ function  addMessage(){
 		return true;
 	}
 }
+$(".a_delete").on("click",function (event) {
+	var id=this.id;
+	event.preventDefault();
+	if (confirm("确定删除吗？")){
+		$.ajax({
+			type:"DELETE",
+			url:"/message/"+id,
+			success:function (data) {
+				alert(data);
+				location.reload();
+            }
+		});
+	}
+});

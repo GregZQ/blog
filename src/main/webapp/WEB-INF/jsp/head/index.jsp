@@ -7,9 +7,9 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>张麒个人博客 -一个java开发者的记录</title>
-	<link rel="stylesheet" type="text/css" href="css/index.css">
-	<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
-	<script type="text/javascript" src="js/index.js"></script>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/index.css">
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/index.js"></script>
 </head>
 <body>
 
@@ -50,7 +50,7 @@
 			<h6>  
 			 <a href="${pageContext.request.contextPath }/title/${title.tid}.html">
 			  <c:choose>
-			    <c:when test="${title.tstatus==true }">
+			    <c:when test="${title.ttype==true }">
 				 	【原创】
 				 </c:when>
 				 <c:otherwise>

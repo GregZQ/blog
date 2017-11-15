@@ -7,12 +7,12 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>张麒个人博客 -一个java开发者的记录</title>
-	<link rel="stylesheet" type="text/css" href="../css/index.css">
-	<link rel="stylesheet" type="text/css" href="../css/list.css">
-	<link rel="stylesheet" type="text/css" href="../css/title.css" />
-	<link rel="stylesheet" type="text/css" href="../css/content.css">
-	<script type="text/javascript" src="../js/jquery-1.11.0.min.js"></script>
-	<script type="text/javascript" src="../js/index.js"></script>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/index.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/list.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/title.css" />
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/content.css">
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/index.js"></script>
 	
 </head>
 <body>
@@ -106,21 +106,15 @@
 			<h5>标签管理</h5>
 			<ul class="zjfk cf">
 				<c:forEach items="${tagList }" var="tag">	
-					<li><a href="${pageContext.request.contextPath }/title/tag/${tag.tid}?currentPage=1">${tag.tcon }(${tag.tcount })</a></li>
+					<li><a href="${pageContext.request.contextPath }/title/tag/${tag.tid}.html?currentPage=1">${tag.tcon }(${tag.tcount })</a></li>
 				</c:forEach>	
 			</ul>
 		</div>
 		<div class="list">
-			<h5>加分享</h5>
-			<div class="bshare-custom icon-medium cf">
-				<a title="分享到" href="http://www.bShare.cn/" id="bshare-shareto" class="bshare-more"></a>
-				<a title="分享到QQ空间" class="bshare-qzone"></a>
-				<a title="分享到新浪微博" class="bshare-sinaminiblog"></a>
-				<a title="分享到人人网" class="bshare-renren"></a>
-				<a title="分享到腾讯微博" class="bshare-qqmb"></a>
-				<a title="分享到网易微博" class="bshare-neteasemb"></a>
-				<a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
-				<span class="BSHARE_COUNT bshare-share-count">0</span>
+			<h5>Time</h5>
+			<div class="bshare-custom icon-medium cf" style="text-align: center">
+				<embed src="http://www.blogclock.cn/swf/S1000746cf11489-9.swf" Width="200px" Height="200px" type="application/x-shockwave-flash" quality="high" wmode="transparent">
+				</embed>
 			</div>
 			<h6>扫描二维码关注<b>张麒博客</b></h6>
 			<p class="erweima"><img src="../images/erweima.png" alt="" /></p>

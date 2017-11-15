@@ -9,7 +9,6 @@
 	<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css"> 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/index.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/tag.js"></script>
 </head>
 <body>
 
@@ -22,7 +21,7 @@
 		<li><a href="${pageContext.request.contextPath }/back/editsays"><span class="nav1">写闲话</span><span class="nav2">写闲话</span></a></li>
 		<li><a href="${pageContext.request.contextPath }/back/title/1"><span class="nav1">文章管理</span><span class="nav2">文章管理</span></a></li>
 		<li><a href="${pageContext.request.contextPath }/back/message"><span class="nav1">留言管理</span><span class="nav2">留言管理</span></a></li>
-		<li><a href="${pageContext.request.contextPath }/back/says"><span class="nav1">闲言碎语</span><span class="nav2">闲言碎语</span></a></li>
+		<li><a href="${pageContext.request.contextPath }/back/say"><span class="nav1">闲言碎语</span><span class="nav2">闲言碎语</span></a></li>
 		<li><a href="${pageContext.request.contextPath }/back/tag"><span class="nav1">类别管理</span><span class="nav2">类别管理</span></a></li>
 
 	</ul>
@@ -41,8 +40,8 @@
 
 <!-- 内容开始 -->
 <div class="content cf">
-		<form  class="form-inline" action="${pageContext.request.contextPath }/tag/addtag" method="post" role="form">
-		 <button type="submit" class="btn btn-default">添加新类别</button>
+		<form  class="form-inline" action="${pageContext.request.contextPath }/tag" method="post" role="form">
+		 <button type="submit"  class="btn btn-default">添加新类别</button>
 		 <div class="form-group">
 		    <label class="sr-only" for="name">名称</label>
 		    <input type="text" class="form-control" name="tcon" id="name" placeholder="请输入名称">
@@ -61,8 +60,8 @@
 					    <c:forEach var="tag" items="${pageBean.list}">
 						    <tr>
 						      <td>${tag.tcon }</td>
-							  <td id="tcount_${tag.tid}">${tag.tcount }</td>
-							  <td><a href="${pageContext.request.contextPath}/tag/delete?tid=${tag.tid}" onclick="javascript:return del('tcount_${tag.tid }')">删除</a>|<a href="#" onclick="javascript:return tagchange(${tag.tid})">更改名称</a></td>
+							  <td id="${tag.tid}">${tag.tcount }</td>
+							  <td><a href="${pageContext.request.contextPath}/tag/${tag.tid}" id="d${tag.tid}" class="a_delete">删除</a>|<a href="${pageContext.request.contextPath}/tag/${tag.tid}" id="u${tag.tid}" class="a_update">更改名称</a></td>
 						    </tr>
 						 </c:forEach>   
 					  </tbody>
@@ -96,12 +95,12 @@
 						<a href="javascript:void(0)" class="current">${i }</a>
 					</c:when>
 					<c:otherwise>
-						<a href="${pageContext.request.contextPath }/back/tagedit?currentPage=${i}">${i }</a>
+						<a href="${pageContext.request.contextPath }/back/tag?currentPage=${i}">${i }</a>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
 			<c:if test="${pageBean.currentPage<pageBean.totalPage }">
-				<a href="${pageContext.request.contextPath }/back/tagedit?currentPage=${pageBean.currentPage+1}">下一页</a>
+				<a href="${pageContext.request.contextPath }/back/tag?currentPage=${pageBean.currentPage+1}">下一页</a>
 			</c:if>
 		</div>
 
@@ -130,4 +129,5 @@
 		return false;
 	}
 </script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/tag.js"></script>
 </html>

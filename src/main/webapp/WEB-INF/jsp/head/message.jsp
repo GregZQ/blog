@@ -7,14 +7,14 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>张麒个人博客 -一个准java程序猿</title>
-	<link rel="stylesheet" type="text/css" href="css/index.css">
-	<link rel="stylesheet" type="text/css" href="css/list.css">
-	<link rel="stylesheet" type="text/css" href="css/title.css" />
-	<link rel="stylesheet" type="text/css" href="css/says.css" />
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/index.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/list.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/title.css" />
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/says.css" />
 	<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css"> 
-	<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
-	<script type="text/javascript" src="js/index.js"></script>
-	<script type="text/javascript" src="js/message.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/index.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/message.js"></script>
 	
 </head>
 <body>
@@ -33,7 +33,7 @@
 <div class="mb_bg cf">
 	<div class="mb_bg_center">
 		<ul>
-			<li><a href="#">[首页]</a></li>
+			<li><a href="${pageContext.request.contextPath}/">[首页]</a></li>
 			<li><a href="#" class="dq">留言板</a></li>
 		</ul>
 	</div>
@@ -45,24 +45,25 @@
 	<div class="content_left">
 		<div>
 			<h4 style="color:black">如果你有闲暇时间的话，就在这留下你的足迹吧~</h4>
-			<form action="${pageContext.request.contextPath }/message/add"  class="bs-example bs-example-form" method="post" role="form">
+			<form action="${pageContext.request.contextPath }/message"  class="bs-example bs-example-form" method="post" role="form">
+				<input type="hidden" name="token" value="${token}"/>
 				<div class="form-group">
-				    <textarea class="form-control" name="mcon" id="mcon" rows="3">不要超过250个字呀~~</textarea>
+				    <textarea class="form-control" name="mcon" id="mcon" rows="3" placeholder="不要超过250个字呀~~" maxlength="250"></textarea>
 				 
 				</div>
 				<div class="input-group" style="padding-right: 300px;">
 		            <span class="input-group-addon">请输入名字</span>
-		            <input type="text" id="mname" name="mname" class="form-control" placeholder="必填">
+		            <input type="text" id="mname" name="mname" class="form-control" maxlength="10" placeholder="必填，不要超过10个字">
 	        	</div>
 	        	<br>
 		        <div class="input-group" style="padding-right: 300px;">
 		        	<span class="input-group-addon">请输入网站</span>
-		            <input type="text" id="murl" name="murl" class="form-control" placeholder="必填">
+		            <input type="text" id="murl" name="murl" class="form-control" maxlength="51" placeholder="必填,不要超过50个字">
 		        </div>
 		        <br>
 		        <div class="input-group" style="padding-right: 300px;">
 		        	<span class="input-group-addon">请输入邮箱</span>
-		            <input type="text" id="mmail" name="mmail" class="form-control" placeholder="必填">
+		            <input type="text" id="mmail" name="mmail" class="form-control" maxlength="20" placeholder="必填,不要超过20个字">
 		        </div>
 		        <br />
 		        <div class="input-group"  style="padding-right: 300px;">
@@ -75,7 +76,7 @@
 	        	<c:forEach items="${pageBean.list }" var="message" varStatus="status">
 					<div class="liuyan_show">
 		        		<div class="say_head">
-		        			<em>${status.index+1 }楼：<b><a href="http://${message.murl }">${message.mname }</a></b></em>
+		        			<em>${status.index+1+(pageBean.currentPage-1)*10 }楼：<b><a href="http://${message.murl }">${message.mname }</a></b></em>
 		        		</div>
 		        		<div class="say_con">
 		        			${message.mcon }
@@ -111,7 +112,7 @@
 				<a href="javascript:void(0)" class="current">${i }</a>
 				</c:when>
 				<c:otherwise>
-				<a href="${pageContext.request.contextPath }/message?currentPage=${pageBean.currentPage-1}">${i }</a>
+				<a href="${pageContext.request.contextPath }/message?currentPage=${i}">${i }</a>
 				</c:otherwise>
 				</c:choose>	
 			</c:forEach>
@@ -156,7 +157,7 @@
 			<h5>标签管理</h5>
 			<ul class="zjfk cf">
 				<c:forEach items="${tagList }" var="tag">	
-					<li><a href="${pageContext.request.contextPath }/title/tag/${tag.tid}?currentPage=1">${tag.tcon }(${tag.tcount })</a></li>
+					<li><a href="${pageContext.request.contextPath }/title/tag/${tag.tid}.html?currentPage=1">${tag.tcon }(${tag.tcount })</a></li>
 				</c:forEach>
 			</ul>
 		</div>

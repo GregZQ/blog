@@ -5,10 +5,14 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.zhangqii.annocation.Token;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.druid.stat.TableStat.Mode;
@@ -21,7 +25,8 @@ import com.zhangqii.utils.PageUtils;
 @Controller
 @RequestMapping("/say")
 public class SayController {
-
+    @Value("${SAY_COUNT}")
+	private String SAY_COUNT;
 	@Autowired
 	private SayService sayService;
 
@@ -30,7 +35,8 @@ public class SayController {
 	 * @param msay
 	 * @return
 	 */
-	@RequestMapping("/addsay")
+	@RequestMapping(value = "",method = RequestMethod.POST)
+	@Token(remove = true)
 	@ResponseBody
 	public String addSay(TMsay msay){
 		msay.setMtime(new Date());
@@ -40,38 +46,21 @@ public class SayController {
 
 	/**
 	 * 删除闲话
-	 * @param msay
+	 * url： /title/id method :DELETE
 	 * @return
 	 */
-	@RequestMapping("/delete")
-	public String delete(TMsay msay){
-		if (msay.getMid()!=null){
-			sayService.delete(msay);
-		}
-		return "redirect:/back/mysay";
+	@RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
+	@ResponseBody  public String delete(@PathVariable Integer id){
+		sayService.deleteById(id);
+		return "删除成功";
 	}
-
-	/**
-	 * 闲话列表展示
-	 * @param request
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping("")
-	public String saylist(HttpServletRequest request,Model model){
-		//查询页
-		int currentPage=1;
-		String cur=request.getParameter("currentPage");
-		if (cur!=null&&!cur.trim().equals("")){
-			currentPage=Integer.valueOf(cur);
-		}
-		//分页显示
-		
-		int count=this.sayService.findAllCount();
-		
-		List<TMsay> sayList=this.sayService.findMySayByLimit(new Page(currentPage, 10));
-		PageBean page=PageUtils.getPageUtils(sayList, count, currentPage, 10);
-		model.addAttribute("pageBean", page);
+	@RequestMapping(value = "",method = RequestMethod.GET)
+    public  String list(Model model,HttpServletRequest request){
+		Integer currentPage=PageUtils.getPageNumber(request.getParameter("currentPage"));
+		Integer allCount=this.sayService.findAllCount();
+		List<TMsay> list=this.sayService.findMySayByLimit(new Page(currentPage,Integer.valueOf(SAY_COUNT)));
+		PageBean pageBean=PageUtils.getPageUtils(list,allCount,currentPage,Integer.valueOf(SAY_COUNT));
+		model.addAttribute("pageBean",pageBean);
 		return "head/saylist";
 	}
 	

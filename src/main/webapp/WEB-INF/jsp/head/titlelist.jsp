@@ -32,7 +32,8 @@
 	<div class="mb_bg_center">
 		<ul>
 			<li><a href="${pageContext.request.contextPath }/">[首页]</a></li>
-			<li><a href="javascript:void(0)" class="dq">全部文章</a></li>
+			<li><a href="javascript:void(0)" class="dq">全部文章</a>
+			</li>
 		</ul>
 	</div>
 </div>
@@ -46,17 +47,17 @@
 		<div class="content_left_b">
 		  	
 				<h6>
-				   <a href="${pageContext.request.contextPath }/title/${title.tid}">
+				   <a href="${pageContext.request.contextPath }/title/${title.tid}.html">
 				  <c:choose>
-					   <c:when test="${title.tstatus==true }">【原创】 </c:when>
+					   <c:when test="${title.ttype eq true }">【原创】 </c:when>
 					   <c:otherwise>【转载】</c:otherwise>
 				  </c:choose> 
 					${title.tname }	
 				 </a>
 				</h6>
 			<dl class="cf">
-				<dt><a href="${pageContext.request.contextPath }/title/${title.tid}"><img src="http://47.94.18.185/pic/blog/titleimage/${title.tpic }" alt="" /></a></dt>
-				<a href="${pageContext.request.contextPath }/title/${title.tid}">
+				<dt><a href="${pageContext.request.contextPath }/title/${title.tid}.html"><img src="http://47.94.18.185/pic/blog/titleimage/${title.tpic }" alt="" /></a></dt>
+				<a href="${pageContext.request.contextPath }/title/${title.tid}.html">
 				<dd>
 					<p>${title.tab}</p>
 				</dd>
@@ -67,7 +68,7 @@
 		</div>
 	  </c:forEach>	
 		<div class="paging">
-		   <c:if test="${paegBean.currentPage>1 }">
+		   <c:if test="${pageBean.currentPage>1 }">
 			<a href="${pageContext.request.contextPath }/title?currentPage=${pageBean.currentPage-1}">上一页</a>
 			</c:if>
 			<c:choose>

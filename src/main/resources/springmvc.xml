@@ -9,9 +9,16 @@
     http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context-4.0.xsd">
-	
+
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+		<property name="detectHandlerMethodsInAncestorContexts">
+			<value>true</value>
+		</property>
+	</bean>
+
 	<context:property-placeholder location="classpath:resource/resource.properties"/>
-	<context:component-scan base-package="com.zhangqii.controller"/>	
+	<context:component-scan base-package="com.zhangqii.controller">
+	</context:component-scan>	
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/" />
@@ -22,14 +29,6 @@
 	<mvc:resources location="/WEB-INF/" mapping="/WEB-INF/*.html"/>
 	<mvc:resources location="/images/" mapping="/images/**"/>
 	<!-- 配置文件上传解析器 -->
-	<bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<!-- 设定默认编码 -->
-		<property name="defaultEncoding" value="UTF-8"></property>
-		<!-- 设定文件上传的最大值1MB，1*1024*1024 -->
-		<property name="maxUploadSize" value="1048576"></property>
-	</bean>
-	
 	<!-- 解决@ResponseBody中文乱码 -->
 	 <mvc:annotation-driven>
 	    <!-- 消息转换器 -->
@@ -42,18 +41,15 @@
 	 <mvc:interceptors>
 	 	<mvc:interceptor>
 	 	  <mvc:mapping path="/back/**"/>
-	 	  <mvc:mapping path="/say/delete"/>
-	 	  <mvc:mapping path="/say/addsay"/>
-	 	  <mvc:mapping path="/title/addtitle"/>
+		  <mvc:mapping path="/say/**"/>
+	 	  <mvc:mapping path="/title/**"/>
 	 	  <mvc:mapping path="/tag/**"/>
-	 	  <mvc:mapping path="/title/addtitle/"/>
-	 	  <mvc:mapping path="/title/savetitle"/>
-	 	  <mvc:mapping path="/title/delete"/>
-	 	  <mvc:mapping path="/title/updatepage"/>
-	 	  <mvc:mapping path="/title/update"/>
-	 	  <mvc:mapping path="/message/delete"/>
+		  <mvc:mapping path="/message/**"/>
 	 	  <bean class="com.zhangqii.interceptor.BackInterceptor"></bean>
 	 	</mvc:interceptor>
-	 	
+	 	<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="com.zhangqii.interceptor.RepeatCommitInterceptor"></bean>
+		</mvc:interceptor>
 	 </mvc:interceptors>
 </beans>

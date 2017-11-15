@@ -1,5 +1,7 @@
 package com.zhangqii.controller;
 
+import com.zhangqii.annocation.Token;
+import com.zhangqii.cache.JedisCache;
 import com.zhangqii.pojo.*;
 import com.zhangqii.service.ConService;
 import com.zhangqii.service.TagSerivce;
@@ -11,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import redis.clients.jedis.Jedis;
 
@@ -27,7 +26,8 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/title")
 public class TitleController {
-
+    @Value("${TITLE_COUNT}")
+	private String TITLE_COUNT;
 	@Autowired
 	private TitleService titleService;
 	@Autowired
@@ -36,9 +36,9 @@ public class TitleController {
 	private TagSerivce tagService;
 	@Value("${STORE_PATH}")
 	private String STORE_PATH;
-
 	/**
-	 * 到文章列表页面，/title?currentPage  method=GET
+	 * 到文章列表页面，
+	 * /title?currentPage  method=GET
 	 * @return
 	 */
 	@RequestMapping(value = "",method = RequestMethod.GET)
@@ -48,11 +48,10 @@ public class TitleController {
 		//查询共有多少文章,用于分页显示（后期将其放入缓存中）
 		int count=this.titleService.findByStatusCount(true);
 
-
 		//查询前10篇文章，在首页显示
-		List<TitleAndTag>titleList=titleService.findTitleAndTagLimit(new Page(currentPage, 10, true));
+		List<TitleAndTag>titleList=titleService.findTitleAndTagLimit(new Page(currentPage, Integer.valueOf(TITLE_COUNT), true));
 
-		PageBean page=PageUtils.getPageUtils(titleList, count, currentPage, 10);
+		PageBean page=PageUtils.getPageUtils(titleList, count, currentPage, Integer.valueOf(TITLE_COUNT));
 		model.addAttribute("pageBean", page);
 		return "head/titlelist";
 	}
@@ -73,9 +72,9 @@ public class TitleController {
 		TTag tag=this.tagService.findByTid(tid);
 		
 		//根据标签查询
-		int Count=this.titleService.findByTagCount(tid,true);
-		List<TTitle> titleList=this.titleService.findByTagLimit(new Page(currentPage, 10,tid,true));
-		PageBean pageBean=PageUtils.getPageUtils(titleList, Count, currentPage, 10);
+		int Count=this.titleService.findByTagCount(tid.toString(),true);
+		List<TTitle> titleList=this.titleService.findByTagLimit(new Page(currentPage, Integer.valueOf(TITLE_COUNT),tid,true));
+		PageBean pageBean=PageUtils.getPageUtils(titleList, Count, currentPage, Integer.valueOf(TITLE_COUNT));
 		model.addAttribute("pageBean", pageBean);
 		model.addAttribute("tid", tid);
 		model.addAttribute("tag", tag);
@@ -98,22 +97,8 @@ public class TitleController {
 		 * 查看对应IP是否存在访问，如果不存在，添加计数
 		 */
 		Jedis jedis=JedisUtils.getJedis();
-		
 		String ip=request.getRemoteAddr();
-		
-		String tiCount=jedis.get("titleCount:"+tid);
-		Integer titleCount=0;
-		if (tiCount==null){
-			jedis.set("titleCount:"+tid,1+"");
-			jedis.sadd("titleIp:"+tid,ip);
-		}else{
-			titleCount=Integer.valueOf(tiCount);
-			if (!jedis.sismember("titleIp:"+tid,ip)){
-				jedis.sadd("titleIp:"+tid,ip);
-				titleCount+=1;
-				jedis.set("titleCount:"+tid,titleCount+"");
-			}
-		}
+		Integer titleCount=JedisCache.addIpByTitle(jedis,ip,tid.toString());
 		jedis.close();
 
 		/**
@@ -149,8 +134,8 @@ public class TitleController {
 	* /title  method :POST
 	* */
 	@RequestMapping("")
-	@ResponseBody
-	public String addTitle(TTitle ttitle,TCon tcon,String flag,MultipartFile uploadFile){
+	@Token(remove = true)
+	@ResponseBody public String addTitle(TTitle ttitle,TCon tcon,String flag,MultipartFile uploadFile){
 		//储存图片
 		String path=null;
 		try{
@@ -172,36 +157,24 @@ public class TitleController {
 
 		return fla? "文章添加成功":"保存草稿成功";
 	}
-	//将嘈草稿存储
-	@RequestMapping("/savetitle")
-	@ResponseBody
-	public String saveTitle(TTitle ttitle,TCon tcon,MultipartFile uploadFile){
-		String path=null;
-		try{
-			path=pictureSave(uploadFile);
-		}catch (Exception e){
-			e.printStackTrace();
+	/*
+	* 根据id删除文章
+	* url:/delete/{id}  DELETE
+	* */
+	@RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
+	@ResponseBody  public String delete(@PathVariable Integer id){
+		if (id!=null){
+			titleService.delete(id);
 		}
-		this.finishTTitle(ttitle, false,path);
-		this.titleService.addTitle(ttitle);
-		tcon.setCid(ttitle.getTid());
-		this.titleService.update(ttitle);
-		return "存草稿成功";
-	}
-	@RequestMapping("/delete")
-	public String delete(TTitle title){
-		if (title.getTid()!=null){
-			titleService.delete(title);
-		}
-		return "redirect:/back/back";
+		return "success";
 	}
 
 	/**
 	 * 更新文章
 	 */
-	@RequestMapping("/update")
-	@ResponseBody
-	public String  update(TCon con,TTitle title,String flag,MultipartFile uploadFile){
+	@RequestMapping(value = "/{id}",method = RequestMethod.PUT)
+	@ResponseBody public String  update(@PathVariable Integer id, TCon con, TTitle title, String flag,MultipartFile uploadFile){
+
 		if (flag!=null&&flag.equals("1")){
 			title.setTstatus(true);
 		}else{
@@ -212,7 +185,9 @@ public class TitleController {
 			 * 为了防止配图的重复，用相同的名字把原来的文章覆盖
 			 */
 			String path=title.getTpic();
+
 			path=path.substring(0,path.lastIndexOf("."));
+
 			String orign=uploadFile.getOriginalFilename();
 			orign=orign.substring(orign.lastIndexOf("."));
 			path=STORE_PATH+path+orign;
@@ -224,9 +199,10 @@ public class TitleController {
 				e.printStackTrace();
 			}
 		}
+
 		this.titleService.update(title);
 		this.conService.update(con);
-		return "success";
+		return "更新成功";
 	}
 	/**
 	 * 文章存储的方法

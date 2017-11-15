@@ -2,13 +2,16 @@ package com.zhangqii.controller;
 
 
 
+import java.lang.annotation.Target;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.zhangqii.annocation.Token;
 import com.zhangqii.pojo.*;
 import com.zhangqii.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/back")
 public class BackController {
+	@Value("${BACK_COUNT}")
+	private String BACK_COUNT;
 	@Autowired
 	private TagSerivce tagSerivce;
 	@Autowired
@@ -44,27 +49,27 @@ public class BackController {
 	 */
 	@RequestMapping(value = "/title/{id}",method = RequestMethod.GET)
 	public String back( @PathVariable(value = "id") String sta,HttpServletRequest request, Model model){
-		/**
-		 * sta:1表示原创，0表示转载
-		 */
+
+		 //sta:1表示原创，0表示转载
 		Boolean status=Integer.valueOf(sta)==1?true:false;
-		Integer count=this.titleService.findByStatusCount(status);
+		//获取文章所属标签
+		String ttag=request.getParameter("tag");
+		if (ttag==null||ttag.equals("0")||ttag.trim().equals("")){
+			ttag=null;
+		}
 		//获取文章类型 1原创 0转载,默认为原创
 		String typ="1";
 		if (request.getParameter("type")!=null){
 			typ=request.getParameter("type");
 		}
 		Boolean type=Integer.valueOf(typ)==1?true:false;
-		//获取文章所属标签
-		String ttag=request.getParameter("tag");
-		if (ttag==null||ttag.equals("0")||ttag.trim().equals("")){
-			ttag=null;
-		}
+		Integer count=this.titleService.findByConditionCount(status,ttag,typ);
+
 		//获取当前页数
 		Integer currentPage=PageUtils.getPageNumber(request.getParameter("currentPage"));
 		//获取文章列表
-		List<TTitle> list=this.titleService.findByStatusLimit(new Page(currentPage, 10,status,type,ttag));
-		PageBean pageBean=PageUtils.getPageUtils(list, count, currentPage, 10);
+		List<TTitle> list=this.titleService.findByStatusLimit(new Page(currentPage, Integer.valueOf(BACK_COUNT),status,type,ttag));
+		PageBean pageBean=PageUtils.getPageUtils(list, count, currentPage, Integer.valueOf(BACK_COUNT));
 		model.addAttribute("pageBean",pageBean); 
 		//查询全部标签
 		List<TTag> tagList=this.tagSerivce.findAllTag();
@@ -82,6 +87,7 @@ public class BackController {
 	 * @return
 	 */
 	@RequestMapping(value = "/edittitle",method = RequestMethod.GET)
+	@Token(save=true)
 	public String edit(HttpServletRequest request,Model model){
 		//获取标签列表
 		List<TTag>tagList=this.tagSerivce.findAllTag();
@@ -102,6 +108,7 @@ public class BackController {
 		model.addAttribute("tcon",tcon);
 		List<TTag> tagList=this.tagSerivce.findAllTag();
 		model.addAttribute("tagList", tagList);
+		model.addAttribute("update","1");
 		return "back/titleedit";
 	}
 	//到文章标签页面
@@ -114,8 +121,8 @@ public class BackController {
 		/**
 		 * 分页查询
 		 */
-		List<TTag>list=this.tagSerivce.findByLimit(new Page(currentPage,10));
-		PageBean<TTag> pageBean=PageUtils.getPageUtils(list, Count, currentPage, 10);
+		List<TTag>list=this.tagSerivce.findByLimit(new Page(currentPage,Integer.valueOf(BACK_COUNT)));
+		PageBean<TTag> pageBean=PageUtils.getPageUtils(list, Count, currentPage, Integer.valueOf(BACK_COUNT));
 		model.addAttribute("pageBean", pageBean);
 		return "back/tag";
 	}
@@ -123,7 +130,7 @@ public class BackController {
 	 * 到闲言碎语列表页面
 	 * /
 	 */
-	@RequestMapping(value = "/says",method = RequestMethod.GET)
+	@RequestMapping(value = "/say",method = RequestMethod.GET)
 	public String mySay(HttpServletRequest request,Model model){
 
 		int currentPage=PageUtils.getPageNumber(
@@ -131,9 +138,9 @@ public class BackController {
         //后期放在缓存中
 		int count=sayService.findAllCount();
 
-		List<TMsay> list=this.sayService.findMySayByLimit(new Page(currentPage, 10));
+		List<TMsay> list=this.sayService.findMySayByLimit(new Page(currentPage, Integer.valueOf(BACK_COUNT)));
 		
-		PageBean pageBean=PageUtils.getPageUtils(list, count, currentPage, 10);
+		PageBean pageBean=PageUtils.getPageUtils(list, count, currentPage, Integer.valueOf(BACK_COUNT));
 		model.addAttribute("pageBean",pageBean);
 		return "/back/says";
 	}
@@ -143,6 +150,7 @@ public class BackController {
 	 * @return
 	 */
 	@RequestMapping("/editsays")
+	@Token(save = true)
 	public String mysay(){
 		return "back/saysedit";
 	}
@@ -157,8 +165,8 @@ public class BackController {
 		Integer count=messageService.findAllCount();
 		
 		model.addAttribute("allCount", count);
-		List<TMessage> messageList=this.messageService.findByLimit(new Page(currentPage, 10));
-		PageBean pageBean=PageUtils.getPageUtils(messageList, count, currentPage, 10);
+		List<TMessage> messageList=this.messageService.findByLimit(new Page(currentPage, Integer.valueOf(BACK_COUNT)));
+		PageBean pageBean=PageUtils.getPageUtils(messageList, count, currentPage, Integer.valueOf(BACK_COUNT));
 		model.addAttribute("pageBean", pageBean);
 		return "back/message";
 	}

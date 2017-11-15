@@ -47,7 +47,7 @@
 			<h6>
 			 <a href="${pageContext.request.contextPath }/title/${title.tid}">
 			  <c:choose>
-				   <c:when test="${title.tstatus==true }">【原创】 </c:when>
+				   <c:when test="${title.ttype eq true }">【原创】 </c:when>
 				   <c:otherwise>【转载】</c:otherwise>
 			  </c:choose> 
 				${title.tname }	
@@ -66,8 +66,10 @@
 	  </c:forEach>
 	  	
 		<div class="paging">
-		    <c:if test="${paegBean.currentPage>1 }">
-			<a href="${pageContext.request.contextPath }/title/tag?tid=${tid }&currentPage=${pageBean.currentPage-1}">上一页</a>
+			<c:if test="${pageBean.currentPage>1  }">
+				<a href="${pageContext.request.contextPath }/title/tag/${tid }.html?currentPage=${pageBean.currentPage-1}">
+					上一页
+				</a>
 			</c:if>
 			<c:choose>
 				<c:when test="${pageBean.totalPage<10}">
@@ -93,12 +95,12 @@
 				<a href="javascript:void(0)" class="current">${i }</a>
 				</c:when>
 				<c:otherwise>
-				<a href="${pageContext.request.contextPath }/title/tag?tid=${tid }&?currentPage=${i}">${i }</a>
+				<a href="${pageContext.request.contextPath }/title/tag/${tid }.html?currentPage=${i}">${i }</a>
 				</c:otherwise>
 				</c:choose>	
 			</c:forEach>
 			<c:if test="${pageBean.currentPage<pageBean.totalPage }">
-				<a href="${pageContext.request.contextPath }/title/tag?tid=${tid }&currentPage=${pageBean.currentPage+1}">下一页</a>
+				<a href="${pageContext.request.contextPath }/title/tag/${tid }.html?currentPage=${pageBean.currentPage+1}">下一页</a>
 			</c:if>
 		</div>
 

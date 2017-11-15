@@ -1,17 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!DOCTYPE html>
+<html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>张麒个人博客</title>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/list.css">
-	<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css"> 
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.11.0.min.js"></script>
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css">
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.form.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/index.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/wangEditor.min.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/title.js"></script>
 </head>
 <body>
 
@@ -24,7 +24,7 @@
 		<li><a href="${pageContext.request.contextPath }/back/editsays"><span class="nav1">写闲话</span><span class="nav2">写闲话</span></a></li>
 		<li><a href="${pageContext.request.contextPath }/back/title/1"><span class="nav1">文章管理</span><span class="nav2">文章管理</span></a></li>
 		<li><a href="${pageContext.request.contextPath }/back/message"><span class="nav1">留言管理</span><span class="nav2">留言管理</span></a></li>
-		<li><a href="${pageContext.request.contextPath }/back/says"><span class="nav1">闲言碎语</span><span class="nav2">闲言碎语</span></a></li>
+		<li><a href="${pageContext.request.contextPath }/back/say"><span class="nav1">闲言碎语</span><span class="nav2">闲言碎语</span></a></li>
 		<li><a href="${pageContext.request.contextPath }/back/tag"><span class="nav1">类别管理</span><span class="nav2">类别管理</span></a></li>
 	</ul>
 </div>
@@ -42,11 +42,18 @@
 
 <!-- 内容开始 -->
 <div class="content cf">
-		<form class="form-horizontal" id="jvForm" role="form" enctype="multipart/form-data" method="post">
-  			 <c:if test="${!empty title}">
-				 <input type="hidden" name="tid" value="${title.tid}"/>
-			 </c:if>
-  			   <div class="form-group">
+		<form class="form-horizontal" id="jvForm" enctype="multipart/form-data" method="post">
+
+			<input type="hidden" name="token" value="${token}"/>
+			<c:if test="${!empty  title}">
+
+				<input type="hidden" name="tid" value="${title.tid }"/>
+				<input type="hidden" name="cid" value="${tcon.cid }"/>
+				<input type="hidden" name="tcount" value="${title.tcount }"/>
+				<input type="hidden" name="ttime" value="${title.ttime }"/>
+				<input type="hidden" name="tpic" value="${title.tpic }"/>
+			</c:if>
+			<div class="form-group">
 			    <label for="inputPassword" class="col-sm-2 control-label">文章名称</label>
 			    <div class="col-sm-4">
 			      <input class="form-control" type="text" id="tname" name="tname" placeholder="请输入文章名称" value="${empty title ? "":title.tname}">
@@ -105,10 +112,9 @@
 			    	<div class="head_ch">
 			    	<img src="http://47.94.18.185/pic/blog/titleimage/${empty title ? 'default.png':title.tpic}" name="tpic" width="100px" height="100px"/>
 			      	</div>
-			      	<input type="file" id="tpic" name="uploadFile" />
+			      	<input type="file" id="tpic" name="uploadFile"/>
 			    </div>
- 			 </div> 
-
+ 			 </div>
  			 <div class="form-group">
  			 	<div id="editor" name="con">
 					 <p>
@@ -118,10 +124,16 @@
  			 </div>
  			  <div class="form-group btn-group">
 				  <c:if test="${update eq 0}">
-			    <button type="button" class="btn btn-default" onclick="addTitle();">添加</button>
-			    <button type="button" class="btn btn-default" onclick="saveTitle();">存草稿</button>
+			    <button type="button" class="btn btn-default" onclick="addTitle(1);">发布</button>
+			    <button type="button" class="btn btn-default" onclick="addTitle(0);">存草稿</button>
+				  </c:if>
+				  <c:if test="${update eq 1}">
+
+					  <button type="button" class="btn btn-default" onclick="updateTitle(1,${title.tid});">发布</button>
+					  <button type="button" class="btn btn-default" onclick="updateTitle(0,${title.tid});">存草稿</button>
 				  </c:if>
 			</div>
+
   		</form>
 </div>
 
@@ -179,3 +191,4 @@ document.getElementById('tpic').addEventListener('change',function(e){
 </script>
 </body>
 </html>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/title.js"></script>

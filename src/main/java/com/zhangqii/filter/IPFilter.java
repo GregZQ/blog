@@ -21,7 +21,7 @@ public class IPFilter implements Filter {
 			throws IOException, ServletException {
 		servletContext=arg0.getServletContext();
 		/**
-		 * redis���Ȳ�ѯ�ܵļ�¼���Ƿ��е�ǰ��ip�����û�У�������һ�����뵱ǰip
+		 * 统计网站访问量
 		 */
 		
 		String ip=arg0.getRemoteAddr();
@@ -37,8 +37,7 @@ public class IPFilter implements Filter {
 			jedis.set("AllCount",AllCount+"");
 		}
 		/**
-		 * �õ���ǰʱ�䣬���DayIp��ʱ���뵱ǰʱ�䲻���������ʱ�䣬���¸����շ�����
-		 * ������ڣ��жϸ����շ�����
+		 * 查看日访问量
 		 */
 		String date=DateUtils.CurrentDay();
 		if (!jedis.sismember("DayIp",date)){

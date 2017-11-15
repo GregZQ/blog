@@ -22,17 +22,29 @@ public class TitleService {
 	public int addTitle(TTitle title){
 		return this.titleMapper.insert(title);
 	}
-	public Integer findByStatusCount(Boolean status) {
+	public  Integer findByStatusCount(Boolean status){
+		return  findByConditionCount(status,null,null);
+	}
+	public int findByTagCount(String tid,Boolean status) {
+		return findByConditionCount(status,tid,null);
+	}
+	public Integer findByConditionCount(Boolean status,String ttag,String type) {
 		TTitleExample example=new TTitleExample();
 		Criteria criteria=example.createCriteria();
 		criteria.andTstatusEqualTo(status);
+		if (ttag!=null){
+			criteria.andTtagEqualTo(Integer.valueOf(ttag));
+		}
+		if (type!=null){
+		criteria.andTtypeEqualTo(type.equals("1"));
+		}
 		return titleMapper.countByExample(example);
 	}
 	public List<TTitle> findByStatusLimit(Page page) {
 		return this.titleMapper.findByStatusLimit(page);
 	}
-	public void delete(TTitle title) {
-		this.titleMapper.deleteByPrimaryKey(title.getTid());
+	public void delete(Integer id) {
+		this.titleMapper.deleteByPrimaryKey(id);
 		
 	}
 	public TTitle  findById(Integer id) {
@@ -49,15 +61,6 @@ public class TitleService {
 	}
 	public List<TTitle> findByTagLimit(Page page) {
 		return this.titleMapper.findByTagLimit(page);
-	}
-	public int findByTagCount(Integer tid,Boolean status) {
-		TTitleExample example=new TTitleExample();
-		Criteria criteria=example.createCriteria();
-		criteria.andTtagEqualTo(tid);
-		criteria.andTstatusEqualTo(status);
-		
-		int Count=titleMapper.countByExample(example);
-		return Count;
 	}
 	public TTitle findMaxTidToTid(Integer tid) {
 		return this.titleMapper.findMaxTidToTid(tid);

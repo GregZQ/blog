@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>张麒个人博客</title>
@@ -22,7 +22,7 @@
 		<li><a href="${pageContext.request.contextPath }/back/editsays"><span class="nav1">写闲话</span><span class="nav2">写闲话</span></a></li>
 		<li><a href="${pageContext.request.contextPath }/back/title/1"><span class="nav1">文章管理</span><span class="nav2">文章管理</span></a></li>
 		<li><a href="${pageContext.request.contextPath }/back/message"><span class="nav1">留言管理</span><span class="nav2">留言管理</span></a></li>
-		<li><a href="${pageContext.request.contextPath }/back/says"><span class="nav1">闲言碎语</span><span class="nav2">闲言碎语</span></a></li>
+		<li><a href="${pageContext.request.contextPath }/back/say"><span class="nav1">闲言碎语</span><span class="nav2">闲言碎语</span></a></li>
 		<li><a href="${pageContext.request.contextPath }/back/tag"><span class="nav1">类别管理</span><span class="nav2">类别管理</span></a></li>
 	</ul>
 </div>
@@ -41,7 +41,8 @@
 <!-- 内容开始 -->
 <div class="content cf">
 		<form class="form-horizontal" id="jvForm" role="form" enctype="multipart/form-data" method="post">
- 			  <div class="form-group">
+			<input type="hidden" name="token" value="${token}"/>
+			<div class="form-group">
 			    <label for="inputPassword" class="col-sm-2 control-label">内容</label>
 			    <div class="col-sm-6">
 			      	<textarea class="form-control" id="mcon" name="mcon" rows="6"></textarea>

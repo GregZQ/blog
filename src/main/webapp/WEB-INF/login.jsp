@@ -24,7 +24,7 @@
 			</form>
 </div>
  	<div class="copy-rights">
-				<p>Copyright &copy; 2015.Company name All rights reserved.<a target="_blank" href="http://zhangqii.com">&#x7F51;&#x9875;&#x6A21;&#x677F;</a></p>
+				<p>Copyright &copy; 2017.Company name All rights reserved.<a target="_blank" href="http://zhangqii.com"></a></p>
 	</div>
 </body>
 </html>

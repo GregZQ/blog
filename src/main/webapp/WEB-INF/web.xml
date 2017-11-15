@@ -4,6 +4,17 @@
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring/applicationContext*.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<!-- 网站监听器 -->
+	<listener>
+		<listener-class>com.zhangqii.listener.MyListener</listener-class>
+	</listener>
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
@@ -18,10 +29,6 @@
 		<param-name>log4jRefreshInterval</param-name>
 		<param-value>6000</param-value>
 	</context-param>
-	<!-- 网站监听器 -->
-    <listener>
-    	<listener-class>com.zhangqii.listener.MyListener</listener-class>
-    </listener>
     <!-- 统计网站访问量 -->
   	<filter>
   		<filter-name>IPFilter</filter-name>
@@ -41,11 +48,27 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>CharacterEncodingFilter</filter-name>
-		<url-pattern>/*</url-pattern>
+		<servlet-name>dispatcher</servlet-name>
 	</filter-mapping>
-	
+	<filter>
+		<filter-name>MultipartFilter</filter-name>
+		<filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>MultipartFilter</filter-name>
+		<servlet-name>dispatcher</servlet-name>
+	</filter-mapping>
+	<!--支持DELETE与PUT提交-->
+	<filter>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<servlet-name>dispatcher</servlet-name>
+	</filter-mapping>
      <servlet>
-		<servlet-name>Zhang</servlet-name>
+		<servlet-name>dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<!-- contextConfigLocation不是必须的， 如果不配置contextConfigLocation， springmvc的配置文件默认在：WEB-INF/servlet的name+"-servlet.xml" -->
 		<init-param>
@@ -55,17 +78,9 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>Zhang</servlet-name>
+		<servlet-name>dispatcher</servlet-name>
 		<!-- 拦截所有请求jsp除外 -->
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:spring/applicationContext-*.xml</param-value>
-	</context-param>
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
 	
 </web-app>
